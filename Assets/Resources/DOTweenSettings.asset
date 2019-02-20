@@ -37,7 +37,7 @@ MonoBehaviour:
     physics2DEnabled: 1
     spriteEnabled: 1
     uiEnabled: 1
-    textMeshProEnabled: 0
+    textMeshProEnabled: 1
     tk2DEnabled: 0
   showPlayingTweens: 0
   showPausedTweens: 0

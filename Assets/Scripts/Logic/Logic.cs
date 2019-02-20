@@ -25,19 +25,17 @@ namespace Logic
         protected void Awake()
         {
             StageData = new StageData();
-            for (var i = 0; i < GameConstant.StageRowCount; i++)
-            {
-                var anchorsCount = StageData.GetRowBubleCount(i);
-                for (var j = 0; j < anchorsCount; j++)
-                {
-                    var obj = Instantiate(Ball, StageData[i, j], Quaternion.identity);
-                    obj.GetComponent<SpriteRenderer>().color = Mathf.CorrelatedColorTemperatureToRGB(Random.Range(1000, 4000));
-                }
-            }
         }
 
-        protected void Update()
-        {
-        }
+        //[Button]
+        //private void ShowBubble(StageType type)
+        //{
+        //    StageData.RebuildStage(type);
+        //    foreach (var anchor in StageData)
+        //    {
+        //        var obj = Instantiate(Ball, anchor, Quaternion.identity);
+        //        obj.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(Random.value, Random.value, Random.value);
+        //    }
+        //}
     }
 }

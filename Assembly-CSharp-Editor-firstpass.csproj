@@ -311,8 +311,32 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.Advertisements">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
+    <Reference Include="DemiLib">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DemiLib/Core/DemiLib.dll</HintPath>
+    </Reference>
+    <Reference Include="DemiEditor">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DemiLib/Core/Editor/DemiEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DOTween/DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTweenEditor">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DOTween/Editor/DOTweenEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTweenPro">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DOTweenPro/DOTweenPro.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTweenProEditor">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DOTweenPro/Editor/DOTweenProEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.OdinInspector.Attributes">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.OdinInspector.Editor">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization.Config">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Plugins/Sirenix/Assemblies/Sirenix.Serialization.Config.dll</HintPath>
     </Reference>
     <Reference Include="Sirenix.Serialization">
       <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Plugins/Sirenix/Assemblies/Sirenix.Serialization.dll</HintPath>
@@ -323,32 +347,8 @@
     <Reference Include="Sirenix.Utilities.Editor">
       <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Plugins/Sirenix/Assemblies/Sirenix.Utilities.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Sirenix.OdinInspector.Editor">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Sirenix.OdinInspector.Attributes">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Attributes.dll</HintPath>
-    </Reference>
-    <Reference Include="Sirenix.Serialization.Config">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Plugins/Sirenix/Assemblies/Sirenix.Serialization.Config.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTweenEditor">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DOTween/Editor/DOTweenEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTweenProEditor">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DOTweenPro/Editor/DOTweenProEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="DemiLib">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DemiLib/Core/DemiLib.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DOTween/DOTween.dll</HintPath>
-    </Reference>
-    <Reference Include="DemiEditor">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DemiLib/Core/Editor/DemiEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTweenPro">
-      <HintPath>D:/Unity/Games/BubbleMegaBattle/Assets/Demigiant/DOTweenPro/DOTweenPro.dll</HintPath>
+    <Reference Include="UnityEditor.Advertisements">
+      <HintPath>D:/Unity/Games/BubbleMegaBattle/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

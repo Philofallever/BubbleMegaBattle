@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba33fe0fb88204b438556593742d166a, type: 3}
+  m_Name: GameCfg
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  RuleDesc: "1.\u6BCF\u4E2A\u5173\u5361\u4F1A\u968F\u673A\u751F\u6210\u4E00\u4E9B\u6CE1\u6CE1,\u901A\u8FC7\u53D1\u5C04\u6CE1\u6CE1\u6D88\u9664\u821E\u53F0\u4E0A\u7684\u6240\u6709\u6CE1\u6CE1\u83B7\u5F97\u5173\u5361\u80DC\u5229.\n2.\u53D1\u5C04\u7684\u6CE1\u6CE1\u5728\u78B0\u649E\u5230\u821E\u53F0\u6CE1\u6CE1\u8FDE\u8D77\u6765\u540E,\u5982\u679C\u540C\u8272\u4E14\u6570\u91CF\u5927\u4E8E3\u65F6,\u5219\u4F1A\u6D88\u9664.\n3.\u6CE1\u6CE1\u53D1\u5C04\u4E00\u5B9A\u6B21\u6570\u540E,\u821E\u53F0\u4F1A\u4E0B\u79FB\u5E76\u5728\u6700\u4E0A\u65B9\u4F1A\u751F\u6210\u4E00\u884C\u65B0\u7684\u6CE1\u6CE1.
+    \n4.\u6BCF\u6B21\u6D88\u9664\u6CE1\u6CE1\u65F6,\u6D88\u9664\u7684\u8D8A\u591A,\u989D\u5916\u5956\u52B1\u5206\u4E5F\u8D8A\u591A."
+  StaticBubble: {fileID: 0}
+  FlyBubble: {fileID: 0}
+  ExtraGrade: 0

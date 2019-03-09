@@ -11,9 +11,18 @@ namespace Logic
       , OddStage  // 首行是奇数的舞台
     }
 
-    public class StageData : IEnumerable<Vector2>
+    public class StageNode
+    {
+        public int      Row;
+        public int      Col;
+        public Vector2  AnchorPos;
+        public BubbType BubbType;
+    }
+
+    public class StageAnchorData : IEnumerable<Vector2>
     {
         public float     TopEdge       { get; private set; } = 9.6f;
+        public float     BottomEdge    => TopEdge - Constant.RowHeight * Constant.StageRowCount;
         public float     LeftEdge      { get; private set; } = -5;
         public float     RightEdge     { get; private set; } = 5;
         public StageType CurrStageType { get; private set; }
@@ -24,13 +33,13 @@ namespace Logic
         private int _row;
         private int _col;
 
-        public StageData()
+        public StageAnchorData(StageType stageType)
         {
             _bubbleAnchors = new Vector2[Constant.StageRowCount][];
             for (var i = 0; i < _bubbleAnchors.Length; ++i)
                 _bubbleAnchors[i] = new Vector2[Constant.RowBubbMaxNum];
 
-            RebuildStage(StageType.EvenStage);
+            RebuildStage(stageType);
         }
 
         // 构建舞台泡泡锚点
@@ -69,16 +78,16 @@ namespace Logic
         {
             get
             {
-                if (col >= Constant.StageRowCount || col < 0)
+                if (row >= Constant.StageRowCount || row < 0)
                 {
-                    Debug.LogError($"StageData getter Y:{col} 超出了行数");
+                    Debug.LogError($"StageAnchorData getter row:{row} 超出了行数");
                     return Vector2.negativeInfinity;
                 }
 
                 var bubleCount = GetRowAnchorsCount(row);
-                if (row >= bubleCount || row < 0)
+                if (col >= bubleCount || col < 0)
                 {
-                    Debug.LogError($"StageData getter X:{row} 超出了泡泡数");
+                    Debug.LogError($"StageAnchorData getter col:{col} 超出了泡泡数");
                     return Vector2.negativeInfinity;
                 }
 

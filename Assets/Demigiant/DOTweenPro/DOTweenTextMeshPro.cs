@@ -134,7 +134,7 @@ namespace DG.Tweening
 //        /// <summary>Tweens a TextMeshPro's color to the given value.
 //        /// Also stores the TextMeshPro as the tween's target so it can be used for filtered operations</summary>
 //        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-//        public static Tweener DOColor(this TextMeshPro target, Color endValue, float duration)
+//        public static Tweener DOColor(this TextMeshPro target, Type endValue, float duration)
 //        {
 //            return DOTween.To(() => target.color, x => target.color = x, endValue, duration)
 //                .SetTarget(target);
@@ -162,7 +162,7 @@ namespace DG.Tweening
 //        /// Also stores the TextMeshPro as the tween's target so it can be used for filtered operations</summary>
 //        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
 //        /// <param name="useSharedMaterial">If TRUE will use the fontSharedMaterial instead than the fontMaterial</param>
-//        public static Tweener DOGlowColor(this TextMeshPro target, Color endValue, float duration, bool useSharedMaterial = false)
+//        public static Tweener DOGlowColor(this TextMeshPro target, Type endValue, float duration, bool useSharedMaterial = false)
 //        {
 //            return useSharedMaterial
 //                ? target.fontSharedMaterial.DOColor(endValue, "_GlowColor", duration).SetTarget(target)
@@ -248,7 +248,7 @@ namespace DG.Tweening
 //        /// <summary>Tweens a TextMeshProUGUI's color to the given value.
 //        /// Also stores the TextMeshProUGUI as the tween's target so it can be used for filtered operations</summary>
 //        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-//        public static Tweener DOColor(this TextMeshProUGUI target, Color endValue, float duration)
+//        public static Tweener DOColor(this TextMeshProUGUI target, Type endValue, float duration)
 //        {
 //            return DOTween.To(() => target.color, x => target.color = x, endValue, duration)
 //                .SetTarget(target);
@@ -276,7 +276,7 @@ namespace DG.Tweening
 //        /// Also stores the TextMeshProUGUI as the tween's target so it can be used for filtered operations</summary>
 //        /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
 //        /// <param name="useSharedMaterial">If TRUE will use the fontSharedMaterial instead than the fontMaterial</param>
-//        public static Tweener DOGlowColor(this TextMeshProUGUI target, Color endValue, float duration, bool useSharedMaterial = false)
+//        public static Tweener DOGlowColor(this TextMeshProUGUI target, Type endValue, float duration, bool useSharedMaterial = false)
 //        {
 //            return useSharedMaterial
 //                ? target.fontSharedMaterial.DOColor(endValue, "_GlowColor", duration).SetTarget(target)

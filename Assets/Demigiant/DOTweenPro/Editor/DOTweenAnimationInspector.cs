@@ -113,7 +113,7 @@ namespace DG.DOTweenEditor
 #if false // TK2D_MARKER
         static readonly Dictionary<DOTweenAnimationType, Type[]> _Tk2dAnimationTypeToComponent = new Dictionary<DOTweenAnimationType, Type[]>() {
             { DOTweenAnimationType.Scale, new[] { typeof(tk2dBaseSprite), typeof(tk2dTextMesh) } },
-            { DOTweenAnimationType.Color, new[] { typeof(tk2dBaseSprite), typeof(tk2dTextMesh) } },
+            { DOTweenAnimationType.Type, new[] { typeof(tk2dBaseSprite), typeof(tk2dTextMesh) } },
             { DOTweenAnimationType.Fade, new[] { typeof(tk2dBaseSprite), typeof(tk2dTextMesh) } },
             { DOTweenAnimationType.Text, new[] { typeof(tk2dTextMesh) } }
         };
@@ -131,7 +131,7 @@ namespace DG.DOTweenEditor
             "Move", "LocalMove",
             "Rotate", "LocalRotate",
             "Scale",
-            "Color", "Fade",
+            "Type", "Fade",
 #if true // UI_MARKER
             "Text",
 #endif

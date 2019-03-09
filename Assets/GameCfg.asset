@@ -20,9 +20,180 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: LevelTunnings
+      Entry: 7
+      Data: 0|Config.LevelTunning[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 1|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: InitBubles
+      Entry: 7
+      Data: 2|Config.BubbType[][], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 3|Config.BubbType[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 10
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 3
+      Data: 7
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|Config.BubbType[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 9
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 3
+      Data: 7
+    - Name: 
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 6
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|Config.BubbType[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 10
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 6
+    - Name: 
+      Entry: 3
+      Data: 6
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: MoveDownShotTimes
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   RuleDesc: "1.\u6BCF\u4E2A\u5173\u5361\u4F1A\u968F\u673A\u751F\u6210\u4E00\u4E9B\u6CE1\u6CE1,\u901A\u8FC7\u53D1\u5C04\u6CE1\u6CE1\u6D88\u9664\u821E\u53F0\u4E0A\u7684\u6240\u6709\u6CE1\u6CE1\u83B7\u5F97\u5173\u5361\u80DC\u5229.\n2.\u53D1\u5C04\u7684\u6CE1\u6CE1\u5728\u78B0\u649E\u5230\u821E\u53F0\u6CE1\u6CE1\u8FDE\u8D77\u6765\u540E,\u5982\u679C\u540C\u8272\u4E14\u6570\u91CF\u5927\u4E8E3\u65F6,\u5219\u4F1A\u6D88\u9664.\n3.\u6CE1\u6CE1\u53D1\u5C04\u4E00\u5B9A\u6B21\u6570\u540E,\u821E\u53F0\u4F1A\u4E0B\u79FB\u5E76\u5728\u6700\u4E0A\u65B9\u4F1A\u751F\u6210\u4E00\u884C\u65B0\u7684\u6CE1\u6CE1.
     \n4.\u6BCF\u6B21\u6D88\u9664\u6CE1\u6CE1\u65F6,\u6D88\u9664\u7684\u8D8A\u591A,\u989D\u5916\u5956\u52B1\u5206\u4E5F\u8D8A\u591A."
-  StaticBubble: {fileID: 0}
+  BubbSprites:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: cd2f73bc345162c428907ce45aa7c8e1, type: 3}
+  - {fileID: 21300000, guid: f038d231a02ff8746acceeceb70fd031, type: 3}
+  - {fileID: 21300000, guid: 817e5faee490c2b49887e5dd8493cfb5, type: 3}
+  - {fileID: 21300000, guid: 5717b4da04a60ff4494d9f3e91bcd2cd, type: 3}
+  - {fileID: 21300000, guid: 1fd481d5a31f00f47b83fa21fb03f4d1, type: 3}
+  - {fileID: 21300000, guid: 5a6f6a76a6526124baf031fa7449acd3, type: 3}
+  - {fileID: 21300000, guid: 770890576a29bbd4885d25c31a4c7102, type: 3}
+  - {fileID: 21300000, guid: b590ccab22ce5ba4c8afe2e61801a9e9, type: 3}
+  StageBubble: {fileID: 7466745894316879108, guid: f2c01bd5f120c3c4bbe3d78c44143b40,
+    type: 3}
   FlyBubble: {fileID: 0}
-  ExtraGrade: 0
+  ExtraGrade: 12
+  MaxLevel: 20

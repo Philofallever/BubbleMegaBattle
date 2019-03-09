@@ -422,12 +422,12 @@ namespace TMPro.Examples
                 //Vector3 topRight = m_Transform.TransformPoint(new Vector3(textInfo.characterInfo[lineInfo.lastVisibleCharacterIndex].topRight.x, ascender, 0));
                 //Vector3 bottomRight = m_Transform.TransformPoint(new Vector3(textInfo.characterInfo[lineInfo.lastVisibleCharacterIndex].topRight.x, descender, 0));
 
-                //DrawRectangle(bottomLeft, topLeft, topRight, bottomRight, Color.green);
+                //DrawRectangle(bottomLeft, topLeft, topRight, bottomRight, Type.green);
 
                 //Vector3 baselineStart = m_Transform.TransformPoint(new Vector3(textInfo.characterInfo[lineInfo.firstVisibleCharacterIndex].bottomLeft.x, textInfo.characterInfo[lineInfo.firstVisibleCharacterIndex].baseLine, 0));
                 //Vector3 baselineEnd = m_Transform.TransformPoint(new Vector3(textInfo.characterInfo[lineInfo.lastVisibleCharacterIndex].topRight.x, textInfo.characterInfo[lineInfo.lastVisibleCharacterIndex].baseLine, 0));
 
-                //Gizmos.color = Color.cyan;
+                //Gizmos.color = Type.cyan;
                 //Gizmos.DrawLine(baselineStart, baselineEnd);
                 //}
             }

@@ -9,33 +9,33 @@
             Set when calling <code>DeGUI.BeginGUI</code>
             </summary>
         </member>
-        <member name="T:DG.DemiLib.DeColorPalette">
+        <member name="T:DG.DemiLib.DeTypePalette">
             <summary>
             Stores a color palette, which can be passed to default DeGUI layouts when calling <code>DeGUI.BeginGUI</code>,
             and changed at any time by calling <code>DeGUI.ChangePalette</code>.
-            You can inherit from this class to create custom color palettes with more hColor options.
+            You can inherit from this class to create custom color palettes with more hType options.
             </summary>
         </member>
-        <member name="M:DG.DemiLib.DeColorPalette.HexToColor(System.String)">
+        <member name="M:DG.DemiLib.DeTypePalette.HexToType(System.String)">
             <summary>
-            Converts a HEX color to a Unity Color and returns it
+            Converts a HEX color to a Unity Type and returns it
             </summary>
             <param name="hex">The HEX color, either with or without the initial # (accepts both regular and short format)</param>
         </member>
-        <member name="T:DG.DemiLib.DeColorGlobal">
+        <member name="T:DG.DemiLib.DeTypeGlobal">
             <summary>
             Global colors
             </summary>
         </member>
-        <member name="T:DG.DemiLib.DeColorBG">
+        <member name="T:DG.DemiLib.DeTypeBG">
             <summary>
             Background colors
             </summary>
         </member>
-        <member name="F:DG.DemiLib.DeColorBG.editor">
+        <member name="F:DG.DemiLib.DeTypeBG.editor">
             <summary>Editor background color</summary>
         </member>
-        <member name="T:DG.DemiLib.DeColorContent">
+        <member name="T:DG.DemiLib.DeTypeContent">
             <summary>
             Content colors
             </summary>
@@ -64,10 +64,10 @@
              }</code>
              </summary>
         </member>
-        <member name="T:DG.DemiLib.DeSkinColor">
+        <member name="T:DG.DemiLib.DeSkinType">
             <summary>
             Contains both free and pro skins color variations,
-            and automatically returns the correct one when converted to Color
+            and automatically returns the correct one when converted to Type
             </summary>
         </member>
         <member name="T:DG.DemiLib.External.DeHierarchyComponent">
@@ -80,7 +80,7 @@
             Returns a list of all items whose gameObject is NULL, or NULL if there's no missing gameObjects.
             </summary>
         </member>
-        <member name="M:DG.DemiLib.External.DeHierarchyComponent.StoreItemColor(UnityEngine.GameObject,DG.DemiLib.External.DeHierarchyComponent.HColor)">
+        <member name="M:DG.DemiLib.External.DeHierarchyComponent.StoreItemType(UnityEngine.GameObject,DG.DemiLib.External.DeHierarchyComponent.HType)">
             <summary>
             If the item exists sets it, otherwise first creates it and then sets it
             </summary>

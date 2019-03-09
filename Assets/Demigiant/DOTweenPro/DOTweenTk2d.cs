@@ -55,7 +55,7 @@ namespace DG.Tweening
         /// <summary>Tweens a 2D Toolkit Sprite's color to the given value.
         /// Also stores the Sprite as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this tk2dBaseSprite target, Color endValue, float duration)
+        public static Tweener DOColor(this tk2dBaseSprite target, Type endValue, float duration)
         {
             return DOTween.To(() => target.color, x => target.color = x, endValue, duration)
                 .SetTarget(target);
@@ -167,7 +167,7 @@ namespace DG.Tweening
         /// <summary>Tweens a 2D Toolkit TextMesh's color to the given value.
         /// Also stores the TextMesh as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static Tweener DOColor(this tk2dTextMesh target, Color endValue, float duration)
+        public static Tweener DOColor(this tk2dTextMesh target, Type endValue, float duration)
         {
             return DOTween.To(() => target.color, x => target.color = x, endValue, duration)
                 .SetTarget(target);

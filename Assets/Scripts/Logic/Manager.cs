@@ -22,8 +22,18 @@ namespace Logic
         [SerializeField, LabelText("待发射的泡泡")]
         private WaitingBubble _waitingBubble;
 
-        public        GameCfg               GameCfg;
-        public        GameObject            Ball;
+        [SerializeField, LabelText("舞台泡泡")]
+        private GameObject _stageBubble;
+
+        [SerializeField, LabelText("飞行中的球")]
+        private GameObject _flyBubble;
+
+        [SerializeField, LabelText("游戏配置")]
+        private GameCfg _gameCfg;
+
+        public  GameCfg         GameCfg => _gameCfg;
+        private Lazy<FlyBubble> _lazyFlyBubble;
+
         public static Manager               Instance        { get; private set; }
         public        int                   Level           { get; private set; }
         public        StageAnchorData       StageAnchorData { get; private set; }
@@ -38,8 +48,9 @@ namespace Logic
 
         protected void Awake()
         {
-            Instance      = this;
-            StageNodeData = new List<List<StageNode>>(Constant.StageRowCount);
+            _lazyFlyBubble = new Lazy<FlyBubble>(() => Instantiate(_flyBubble).GetComponent<FlyBubble>());
+            Instance       = this;
+            StageNodeData  = new List<List<StageNode>>(Constant.StageRowCount);
             for (var i = 0; i < Constant.StageRowCount; ++i)
                 StageNodeData.Add(new List<StageNode>(Constant.RowBubbMaxNum));
         }
@@ -84,8 +95,7 @@ namespace Logic
         {
             if (node.BubbType == BubbType.Empty || node.BubbType == BubbType.Colorful) return;
 
-            var src         = GameCfg.StageBubble;
-            var stageBubble = Instantiate(src, node.AnchorPos, Quaternion.identity, _stageBubbParent).GetComponent<StageBubble>();
+            var stageBubble = Instantiate(_stageBubble, node.AnchorPos, Quaternion.identity, _stageBubbParent).GetComponent<StageBubble>();
             stageBubble.SetBubbleType(node.BubbType);
         }
 
@@ -115,6 +125,29 @@ namespace Logic
 
         public void SpawnFlyBubble()
         {
+            var type   = _waitingBubble.BubbType;
+            var flyDir = _waitingBubble.FlyDirection;
+            _lazyFlyBubble.Value.Respawn(type, flyDir, _waitingBubble.transform.position);
+        }
+
+        public void OnCollideStageBubble(Vector2 point)
+        {
+            // 生成新的舞台泡泡
+            var anchorIndex = StageAnchorData.CalcMostCloseAnchorIndex(point);
+            RefreshStageNode(anchorIndex.x, anchorIndex.y, _lazyFlyBubble.Value.BubbType);
+            SpawnWaitBubble();
+        }
+
+        private void RefreshStageNode(int row, int col, BubbType type)
+        {
+            var stageNode = StageNodeData[row][col];
+            if (stageNode.BubbType == BubbType.Empty)
+            {
+                stageNode.BubbType = type;
+                SpawnStageBubble(stageNode);
+            }
+
+            stageNode.BubbType = type;
         }
     }
 }

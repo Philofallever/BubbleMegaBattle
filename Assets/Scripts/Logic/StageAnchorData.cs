@@ -21,7 +21,8 @@ namespace Logic
 
     public class StageAnchorData : IEnumerable<Vector2>
     {
-        public float     TopEdge       { get; private set; } = 9.6f;
+        // 舞台边距,本应该计算得出,偷懒直接按照场景数据赋值
+        public float     TopEdge       { get; private set; } = 8.6f;
         public float     BottomEdge    => TopEdge - Constant.RowHeight * Constant.StageRowCount;
         public float     LeftEdge      { get; private set; } = -5;
         public float     RightEdge     { get; private set; } = 5;

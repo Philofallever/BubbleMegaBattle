@@ -192,8 +192,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5a6f6a76a6526124baf031fa7449acd3, type: 3}
   - {fileID: 21300000, guid: 770890576a29bbd4885d25c31a4c7102, type: 3}
   - {fileID: 21300000, guid: b590ccab22ce5ba4c8afe2e61801a9e9, type: 3}
-  StageBubble: {fileID: 7466745894316879108, guid: f2c01bd5f120c3c4bbe3d78c44143b40,
-    type: 3}
-  FlyBubble: {fileID: 0}
+  FlyBubbleSpeed: 1
   ExtraGrade: 12
   MaxLevel: 20

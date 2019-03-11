@@ -20,23 +20,18 @@ namespace GamePrefab
         [SerializeField, LabelText("发射线")]
         private LineRenderer _lineRenderer;
 
-        private const float _punchDuration = 0.2f;
+        private const float _punchDuration     = 0.2f;
+        private const float _lineMaterialScale = 11.8f;
 
         private Image    _image;
-        public  BubbType BubbType { get; private set; }
-
-        [SerializeField]
-        private Vector2 _flyDirection;
-
-        private Vector3[] _linePositions;
-
+        public  BubbType BubbType     { get; private set; }
+        public  Vector2  FlyDirection { get; private set; }
 
         private void Awake()
         {
-            _image         = GetComponent<Image>();
-            _linePositions = new Vector3[3];
+            _image = GetComponent<Image>();
+            _lineRenderer.material.SetTextureScale("_MainTex", new Vector2(_lineMaterialScale, 1f));
         }
-
 
         public void Respawn(BubbType type, out float animDuration)
         {
@@ -64,25 +59,32 @@ namespace GamePrefab
 
             if (pos.y > selfPos.y) return;
 
-            var ray = Physics2D.Raycast(transform.position, (selfPos - pos));
-            if (ray.point.y < 9.6 - Constant.RowHeight * Constant.StageRowCount) return;
+            var ray             = Physics2D.Raycast(transform.position, (selfPos - pos));
+            var stageAnchorData = Manager.Instance.StageAnchorData;
 
-            _flyDirection               = (selfPos - pos).normalized;
+            if (ray.point.y < stageAnchorData.BottomEdge) return; // 不能出下边界
+
+            FlyDirection                = (selfPos - pos).normalized;
             _lineRenderer.positionCount = 2;
             _lineRenderer.SetPosition(1, ray.point);
-            if (ray.rigidbody.bodyType == RigidbodyType2D.Static && ray.point.y < 9.6)
+            // 碰到墙壁
+            if (ray.rigidbody.bodyType == RigidbodyType2D.Static && ray.point.y < stageAnchorData.TopEdge)
             {
-                var rayDir = Vector2.Scale(_flyDirection, new Vector2(-1, 1));
-                ray                         = Physics2D.Raycast(new Vector2(Mathf.Clamp(ray.point.x, -5, 5), ray.point.y), rayDir);
+                var offestY  = Constant.BubbRadius * (FlyDirection.y / FlyDirection.x);
+                var rayPoint = new Vector2(ray.point.x - Mathf.Sin(offestY) * Constant.BubbRadius, ray.point.y - Mathf.Abs(offestY));
+                _lineRenderer.SetPosition(1, rayPoint);
+
+                var rayDir = new Vector2(-FlyDirection.x, FlyDirection.y);
+                ray                         = Physics2D.Raycast(rayPoint, rayDir);
                 _lineRenderer.positionCount = 3;
-                print($"raydir = {rayDir} {ray.transform.name}");
                 _lineRenderer.SetPosition(2, ray.point);
             }
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            //Manager.Instance.SpawnFlyBubble();
+            gameObject.SetActive(false);
+            Manager.Instance.SpawnFlyBubble();
         }
 
         #endregion

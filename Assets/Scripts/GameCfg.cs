@@ -87,11 +87,8 @@ namespace Config
         [LabelText("泡泡精灵")]
         public Sprite[] BubbSprites;
 
-        [LabelText("舞台气泡")]
-        public GameObject StageBubble;
-
-        [LabelText("飞行气泡")]
-        public GameObject FlyBubble;
+        [LabelText("飞行气泡速度")]
+        public float FlyBubbleSpeed;
 
         [LabelText("额外奖励分")]
         public int ExtraGrade;

@@ -70,15 +70,15 @@ namespace GamePrefab
             // 碰到墙壁
             if (ray.rigidbody.bodyType == RigidbodyType2D.Static && ray.point.y < stageAnchorData.TopEdge)
             {
-                var offestY  = Constant.BubbRadius * (FlyDirection.y / FlyDirection.x); // tanθ = y/x
-                var rayPoint = new Vector2(ray.point.x - Mathf.Sign(offestY) * Constant.BubbRadius, ray.point.y - Mathf.Abs(offestY));
+                var offestY  = GameConstant.BubbRadius * (FlyDirection.y / FlyDirection.x); // tanθ = y/x
+                var rayPoint = new Vector2(ray.point.x - Mathf.Sign(offestY) * GameConstant.BubbRadius, ray.point.y - Mathf.Abs(offestY));
                 _lineRenderer.SetPosition(1, rayPoint);
 
                 var rayDir = new Vector2(-FlyDirection.x, FlyDirection.y);
                 ray      = Physics2D.Raycast(rayPoint, rayDir);
                 rayPoint = ray.point;
                 if (ray.rigidbody.bodyType == RigidbodyType2D.Static)
-                    rayPoint = new Vector2(ray.point.x - Mathf.Sign(rayDir.x) * Constant.BubbRadius, ray.point.y - Mathf.Abs(offestY));
+                    rayPoint = new Vector2(ray.point.x - Mathf.Sign(rayDir.x) * GameConstant.BubbRadius, ray.point.y - Mathf.Abs(offestY));
 
                 _lineRenderer.positionCount = 3;
                 _lineRenderer.SetPosition(2, rayPoint);
@@ -88,6 +88,7 @@ namespace GamePrefab
         public void OnEndDrag(PointerEventData eventData)
         {
             gameObject.SetActive(false);
+            _lineRenderer.positionCount = 0;
             Manager.Instance.SpawnFlyBubble();
         }
 

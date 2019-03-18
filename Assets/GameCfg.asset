@@ -26,7 +26,7 @@ MonoBehaviour:
       Data: 0|Config.LevelTunning[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 7
       Data: 1|Config.LevelTunning, Assembly-CSharp
@@ -175,6 +175,30 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 6|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: InitBubles
+      Entry: 7
+      Data: 7|Config.BubbType[][], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: MoveDownShotTimes
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -192,6 +216,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5a6f6a76a6526124baf031fa7449acd3, type: 3}
   - {fileID: 21300000, guid: 770890576a29bbd4885d25c31a4c7102, type: 3}
   - {fileID: 21300000, guid: b590ccab22ce5ba4c8afe2e61801a9e9, type: 3}
-  FlyBubbleSpeed: 1
+  FlyBubbleSpeed: 40
   ExtraGrade: 12
   MaxLevel: 20

@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BubbleSpriteAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 256
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: cd2f73bc345162c428907ce45aa7c8e1, type: 3}
+    - {fileID: 2800000, guid: f038d231a02ff8746acceeceb70fd031, type: 3}
+    - {fileID: 2800000, guid: 817e5faee490c2b49887e5dd8493cfb5, type: 3}
+    - {fileID: 2800000, guid: 5717b4da04a60ff4494d9f3e91bcd2cd, type: 3}
+    - {fileID: 2800000, guid: 1fd481d5a31f00f47b83fa21fb03f4d1, type: 3}
+    - {fileID: 2800000, guid: 5a6f6a76a6526124baf031fa7449acd3, type: 3}
+    - {fileID: 2800000, guid: b590ccab22ce5ba4c8afe2e61801a9e9, type: 3}
+    - {fileID: 2800000, guid: 770890576a29bbd4885d25c31a4c7102, type: 3}
+    totalSpriteSurfaceArea: 32768
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: f038d231a02ff8746acceeceb70fd031, type: 3}
+  - {fileID: 21300000, guid: 1fd481d5a31f00f47b83fa21fb03f4d1, type: 3}
+  - {fileID: 21300000, guid: 5a6f6a76a6526124baf031fa7449acd3, type: 3}
+  - {fileID: 21300000, guid: 770890576a29bbd4885d25c31a4c7102, type: 3}
+  - {fileID: 21300000, guid: 5717b4da04a60ff4494d9f3e91bcd2cd, type: 3}
+  - {fileID: 21300000, guid: b590ccab22ce5ba4c8afe2e61801a9e9, type: 3}
+  - {fileID: 21300000, guid: cd2f73bc345162c428907ce45aa7c8e1, type: 3}
+  - {fileID: 21300000, guid: 817e5faee490c2b49887e5dd8493cfb5, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - paopaofen
+  - paopaolan
+  - paopaolv
+  - paopaozi
+  - paopaohuang
+  - paopaoshandian
+  - paopaocheng
+  - paopaohong
+  m_Tag: BubbleSpriteAtlas
+  m_IsVariant: 0

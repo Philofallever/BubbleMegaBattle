@@ -33,7 +33,8 @@ namespace GamePrefab
         public void Respawn()
         {
             gameObject.SetActive(true);
-            BubbType = (BubbType) UnityEngine.Random.Range(1, Enum.GetValues(typeof(BubbType)).Length);
+            BubbType = (BubbType)UnityEngine.Random.Range(1, Enum.GetValues(typeof(BubbType)).Length);
+            //BubbType = BubbType.Colorful;
             var cfg = Manager.Instance.GameCfg;
             _img.sprite = cfg.BubbSprites[(int) BubbType];
         }

@@ -35,14 +35,41 @@ namespace GamePrefab
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            var otherBody = collision.rigidbody;
-            if (otherBody.bodyType == RigidbodyType2D.Static) //  碰到墙壁了
+            var involveBody   = collision.rigidbody;
+            // REMARK 碰到墙壁角,不精确
+            var notContactTop = collision.contacts[0].point.y + GameConstant.BubbRadius * 2 < Manager.Instance.StageAnchorData.TopEdge;
+            //print($"{collision.contacts[0].point.x:F6} {collision.contacts[0].point.y:F6},{Manager.Instance.StageAnchorData.TopEdge:f6}");
+            if (involveBody.bodyType == RigidbodyType2D.Static && notContactTop) //  碰到墙壁了
                 return;
 
-            _rigidbody.simulated = false;
+            if (_renderer.enabled == false) return; // 一个物理update碰撞到多个物体
+
             _renderer.enabled    = false;
-            var point = collision.contacts[0];
-            Manager.Instance.OnCollideStageBubble(point.point);
+            _rigidbody.simulated = false;
+
+            if (involveBody.bodyType == RigidbodyType2D.Kinematic)
+                Manager.Instance.OnCollideStageBubble(collision);
+            else
+                Manager.Instance.OnCollideStageTopEdge(collision);
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            var involveBody   = collision.rigidbody;
+            var notContactTop = collision.contacts[0].point.y + GameConstant.BubbRadius * 2 < Manager.Instance.StageAnchorData.TopEdge;
+
+            if (involveBody.bodyType == RigidbodyType2D.Static && notContactTop) //  碰到墙壁了
+                return;
+
+            if (_renderer.enabled == false) return; // 一个物理update碰撞到多个物体
+
+            _renderer.enabled    = false;
+            _rigidbody.simulated = false;
+
+            if (involveBody.bodyType == RigidbodyType2D.Kinematic)
+                Manager.Instance.OnCollideStageBubble(collision);
+            else
+                Manager.Instance.OnCollideStageTopEdge(collision);
         }
     }
 }

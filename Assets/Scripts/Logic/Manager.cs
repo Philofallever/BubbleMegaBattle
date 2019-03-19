@@ -2,11 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Config;
-using DG.Tweening;
 using GamePrefab;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -43,8 +40,9 @@ namespace Logic
         public        List<List<StageNode>> StageNodeData   { get; private set; }
 
         private Dictionary<StageNode, HashSet<StageNode>> _parentRecords; // 同色泡泡记录表(并查集)
-        private List<StageBubble>                         _bubbsCache;    // Bubble缓存
+        private List<StageBubble>                         _bubbsCache;    // Bubbles缓存
         private HashSet<StageNode>                        _nodesCache;    // Nodes缓存
+        private HashSet<StageNode>                        _nodesCache2;   // Nodes缓存
 
         [RuntimeInitializeOnLoadMethod]
         public static void Initialize()
@@ -92,7 +90,7 @@ namespace Logic
                     if (cfgClr == BubbType.Empty) continue;
 
                     node.ParentNode      = node;
-                    _parentRecords[node] = new HashSet<StageNode>() {node};
+                    _parentRecords[node] = new HashSet<StageNode> {node};
                 }
             }
 
@@ -195,7 +193,7 @@ namespace Logic
 
             targetNode.BubbType   = _lazyFlyBubble.Value.BubbType == BubbType.Colorful ? involveNode.BubbType : _lazyFlyBubble.Value.BubbType;
             targetNode.ParentNode = targetNode;
-            _parentRecords.Add(targetNode, new HashSet<StageNode>() {targetNode});
+            _parentRecords.Add(targetNode, new HashSet<StageNode> {targetNode});
             SpawnStageBubble(targetNode);
             WipeBubbleAfterCollide(targetNode.ParentNode);
         }
@@ -207,7 +205,7 @@ namespace Logic
             StageNode targetNode   = null;
             foreach (var rowNode in StageNodeData[0])
             {
-                if ((rowNode.BubbType != BubbType.Empty)) continue;
+                if (rowNode.BubbType != BubbType.Empty) continue;
 
                 if (targetNode == null)
                     targetNode = rowNode;
@@ -230,7 +228,7 @@ namespace Logic
                                       ? (BubbType) UnityEngine.Random.Range((int) BubbType.Orange, (int) BubbType.Colorful)
                                       : _lazyFlyBubble.Value.BubbType;
             targetNode.ParentNode = targetNode;
-            _parentRecords.Add(targetNode, new HashSet<StageNode>() {targetNode});
+            _parentRecords.Add(targetNode, new HashSet<StageNode> {targetNode});
             SpawnStageBubble(targetNode);
             WipeBubbleAfterCollide(targetNode.ParentNode);
         }
@@ -291,8 +289,9 @@ namespace Logic
             }
 
             _nodesCache.Clear();
+            _nodesCache2.Clear();
             // 消除的泡泡
-            _stageBubbParent.GetComponentsInChildren<StageBubble>(_bubbsCache);
+            _stageBubbParent.GetComponentsInChildren(_bubbsCache);
             _bubbsCache.RemoveAll(bubb => !wipeNodes.Contains(bubb.StageNode));
 
             foreach (var bubble in _bubbsCache)
@@ -306,6 +305,7 @@ namespace Logic
             {
                 if (node == null || node.BubbType == BubbType.Empty) return false;
 
+                _nodesCache2.Add(node);
                 if (node.Row == 0)
                 {
                     _nodesCache.Add(node);
@@ -318,7 +318,7 @@ namespace Logic
                 // BUG 两个泡泡会一直递归
                 foreach (var sideNode in node)
                 {
-                    if (sideNode == null || sideNode.BubbType == BubbType.Empty) continue;
+                    if (sideNode == null || sideNode.BubbType == BubbType.Empty || _nodesCache2.Contains(node)) continue;
 
                     var isLink = IsBubbLinkToTop(sideNode);
                     if (isLink)

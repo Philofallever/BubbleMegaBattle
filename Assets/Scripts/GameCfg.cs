@@ -19,6 +19,11 @@ namespace Config
       , Colorful
     }
 
+    public enum LevelResult
+    {
+        Pass
+      , FailToMoveDown
+    }
 
     public static class GameConstant
     {
@@ -27,6 +32,7 @@ namespace Config
         public const           int   RowBubbMinNum     = RowBubbMaxNum - 1;
         public const           float BubbRadius        = 0.5f; // 泡泡半径(unity单位)
         public const           int   BubbWipeThreshold = 3;
+        public const           int   MoveDowRowNum     = 2;
         public static readonly float RowHeight;
 
         static GameConstant()
@@ -77,7 +83,7 @@ namespace Config
         public BubbType[][] InitBubles;
 
         [LabelText("下移需要发射次数")]
-        public int MoveDownShotTimes;
+        public int MoveDownFlyTimes;
     }
 
     public class GameCfg : SerializedScriptableObject

@@ -7,6 +7,7 @@ using Config;
 using GamePrefab;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityRandom = UnityEngine.Random;
 
 namespace Logic
 {
@@ -36,13 +37,14 @@ namespace Logic
 
         public static Manager               Instance        { get; private set; }
         public        int                   Level           { get; private set; }
+        public        int                   FlyCount        { get; private set; } // 发射次数
         public        StageAnchorData       StageAnchorData { get; private set; }
         public        List<List<StageNode>> StageNodeData   { get; private set; }
 
-        private Dictionary<StageNode, HashSet<StageNode>> _parentRecords; // 同色泡泡记录表(并查集)
-        private List<StageBubble>                         _bubbsCache;    // Bubbles缓存
-        private HashSet<StageNode>                        _nodesCache;    // Nodes缓存
-        private HashSet<StageNode>                        _nodesCache2;   // Nodes缓存
+        private Dictionary<StageNode, HashSet<StageNode>> _parentRecords;  // 同色泡泡记录表(并查集)
+        private List<StageBubble>                         _bubbsCache;     // Bubbles缓存
+        private HashSet<StageNode>                        _nodesCache;     // Nodes缓存
+        private HashSet<StageNode>                        _nodesPathCache; // Nodes缓存
 
         [RuntimeInitializeOnLoadMethod]
         public static void Initialize()
@@ -58,9 +60,10 @@ namespace Logic
             StageNodeData  = new List<List<StageNode>>(GameConstant.StageRowCount);
             for (var i = 0; i < GameConstant.StageRowCount; ++i)
                 StageNodeData.Add(new List<StageNode>(GameConstant.RowBubbMaxNum));
-            _parentRecords = new Dictionary<StageNode, HashSet<StageNode>>();
-            _bubbsCache    = new List<StageBubble>();
-            _nodesCache    = new HashSet<StageNode>();
+            _parentRecords  = new Dictionary<StageNode, HashSet<StageNode>>();
+            _bubbsCache     = new List<StageBubble>();
+            _nodesCache     = new HashSet<StageNode>();
+            _nodesPathCache = new HashSet<StageNode>();
         }
 
         [Button]
@@ -158,7 +161,10 @@ namespace Logic
             var type   = _waitingBubble.BubbType;
             var flyDir = _waitingBubble.FlyDirection;
             _lazyFlyBubble.Value.Respawn(type, flyDir, _waitingBubble.transform.position);
+            ++FlyCount;
         }
+
+        #region 泡泡碰撞,消除,下移
 
         // 碰撞后回调
         public void OnCollideStageBubble(Collision2D collision)
@@ -198,7 +204,6 @@ namespace Logic
             WipeBubbleAfterCollide(targetNode.ParentNode);
         }
 
-
         public void OnCollideStageTopEdge(Collision2D collision)
         {
             var       contactPoint = collision.contacts[0].point;
@@ -225,7 +230,7 @@ namespace Logic
             }
 
             targetNode.BubbType = _lazyFlyBubble.Value.BubbType == BubbType.Colorful
-                                      ? (BubbType) UnityEngine.Random.Range((int) BubbType.Orange, (int) BubbType.Colorful)
+                                      ? GetRandomStageBubbType()
                                       : _lazyFlyBubble.Value.BubbType;
             targetNode.ParentNode = targetNode;
             _parentRecords.Add(targetNode, new HashSet<StageNode> {targetNode});
@@ -285,11 +290,12 @@ namespace Logic
                         node.ParentNode = null;
                         wipeNodes.Add(node);
                     }
+
+                    _nodesPathCache.Clear();
                 }
             }
 
             _nodesCache.Clear();
-            _nodesCache2.Clear();
             // 消除的泡泡
             _stageBubbParent.GetComponentsInChildren(_bubbsCache);
             _bubbsCache.RemoveAll(bubb => !wipeNodes.Contains(bubb.StageNode));
@@ -305,8 +311,10 @@ namespace Logic
             {
                 if (node == null || node.BubbType == BubbType.Empty) return false;
 
-                _nodesCache2.Add(node);
-                if (node.Row == 0)
+                if (!_nodesPathCache.Add(node)) // 已经查找过的点
+                    return false;
+
+                if (node.Row == 0) // 第一排
                 {
                     _nodesCache.Add(node);
                     return true;
@@ -315,10 +323,9 @@ namespace Logic
                 if (_nodesCache.Contains(node))
                     return true;
 
-                // BUG 两个泡泡会一直递归
                 foreach (var sideNode in node)
                 {
-                    if (sideNode == null || sideNode.BubbType == BubbType.Empty || _nodesCache2.Contains(node)) continue;
+                    if (sideNode == null || sideNode.BubbType == BubbType.Empty) continue;
 
                     var isLink = IsBubbLinkToTop(sideNode);
                     if (isLink)
@@ -330,11 +337,99 @@ namespace Logic
 
                 return false;
             }
-
-
-            //_bubbsCache.Add(Array.Find(stageBubbs, bubb => bubb.Row == node.Row && bubb.Col == node.Row));
         }
 
+        //private void TryMoveDown()
+        //{
+        //    if (FlyCount % GameCfg.LevelTunnings[Level].MoveDownFlyTimes != 0) return;
+
+        //    // 如果不能下移则游戏结束
+        //    var lastRow = StageNodeData[GameConstant.StageRowCount - GameConstant.MoveDowRowNum - 1];
+        //    if (lastRow.Exists(node => node.BubbType != BubbType.Empty))
+        //    {
+        //        SetLevelResult(LevelResult.FailToMoveDown);
+        //        return;
+        //    }
+
+        //    _stageBubbParent.GetComponentsInChildren<StageBubble>(_bubbsCache);
+        //    for (var row = GameConstant.StageRowCount - 1; row >= GameConstant.MoveDowRowNum; --row)
+        //    {
+        //        for (var col = 0; col < StageNodeData[row].Count; ++col)
+        //        {
+        //            StageNodeData[row][col].ParentNode = StageNodeData[row - 2][col].ParentNode;
+        //            StageNodeData[row][col].BubbType   = StageNodeData[row - 2][col].BubbType;
+        //        }
+        //    }
+        //    // 生成新泡泡
+
+        //    for (var row = GameConstant.RowBubbMinNum - 1; row >= 0; --row)
+        //    {
+        //        var blowRow = StageNodeData[row + 1];
+        //        foreach (var blowNode in blowRow)
+        //        {
+        //            var upLeft  = blowNode.GetUpLeft();
+        //            var upRight = blowNode.GetUpRight();
+
+        //            if (blowNode.BubbType == BubbType.Empty)
+        //            {
+        //                if (upLeft?.BubbType == BubbType.Empty)
+        //                {
+        //                    upLeft.BubbType = UnityRandom.value > 1f / (Level + 1) ? GetRandomStageBubbType() : BubbType.Empty;
+
+        //                    if (upRight == null && upLeft.BubbType == BubbType.Empty)
+        //                        upLeft.BubbType = GetRandomStageBubbType();
+
+        //                    if (upLeft.BubbType != BubbType.Empty)
+        //                    {
+        //                        upLeft.ParentNode      = upRight;
+        //                        _parentRecords[upLeft] = new HashSet<StageNode>() {upLeft};
+        //                    }
+        //                }
+
+        //                if (upRight?.BubbType == BubbType.Empty)
+        //                {
+        //                    upRight.BubbType = UnityRandom.value < 1f / (Level + 1) ? upLeft?.BubbType ?? BubbType.Empty : BubbType.Empty;
+        //                    if (upLeft == null && upRight.BubbType == BubbType.Empty)
+        //                        upRight.BubbType = GetRandomStageBubbType();
+
+        //                    if (upRight.BubbType != BubbType.Empty)
+        //                    {
+        //                        upRight.ParentNode      = upRight;
+        //                        _parentRecords[upRight] = new HashSet<StageNode>() {upRight};
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+
+        //                if (upLeft?.BubbType == BubbType.Empty)
+        //                {
+        //                    upLeft.BubbType = GetRandomStageBubbType();
+        //                    upLeft.ParentNode      = upRight;
+        //                    _parentRecords[upLeft] = new HashSet<StageNode>() {upLeft};
+        //                }
+
+        //                if(upRight?.BubbType == BubbType.Empty)
+
+
+        //            }
+        //        }
+        //    }
+        //    foreach (var bubble in _bubbsCache)
+        //        bubble.MoveDown();
+        //}
+
+        #endregion
+
+        private void SetLevelResult(LevelResult result)
+        {
+        }
+
+
+        private BubbType GetRandomStageBubbType()
+        {
+            return (BubbType) UnityEngine.Random.Range((int) BubbType.Orange, (int) BubbType.Colorful);
+        }
 
         private void RefreshStageNode(int row, int col, BubbType type)
         {

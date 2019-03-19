@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using Config;
-using DG.Tweening;
+﻿using DG.Tweening;
 using Logic;
-using UnityEngine.UI;
+using UnityEngine;
 
 namespace GamePrefab
 {
@@ -11,7 +8,6 @@ namespace GamePrefab
     public class StageBubble : MonoBehaviour
     {
         private SpriteRenderer _renderer;
-        private Tweener        _wipeAnim;
         public  StageNode      StageNode { get; private set; }
 
         private void Awake()
@@ -27,9 +23,8 @@ namespace GamePrefab
 
         public void PlayWipeAnim()
         {
-            if (_wipeAnim == null)
-                _wipeAnim = transform.DOMove(Vector3.down * 2, 0.6f).SetRelative(true).Pause().OnComplete(() => Destroy(gameObject));
-            _wipeAnim.Restart();
+            _renderer.DOFade(0, 0.6f).SetEase(Ease.InQuad);
+            transform.DOMove(Vector3.down * 2, 0.6f).SetRelative(true).OnComplete(() => Destroy(gameObject));
         }
     }
 }

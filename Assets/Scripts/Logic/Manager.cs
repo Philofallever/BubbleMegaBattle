@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using Config;
+using DG.Tweening;
 using GamePrefab;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -55,8 +56,8 @@ namespace Logic
 
         protected void Awake()
         {
-            _lazyFlyBubble = new Lazy<FlyBubble>(() => Instantiate(_flyBubble).GetComponent<FlyBubble>());
             Instance       = this;
+            _lazyFlyBubble = new Lazy<FlyBubble>(() => Instantiate(_flyBubble).GetComponent<FlyBubble>());
             StageNodeData  = new List<List<StageNode>>(GameConstant.StageRowCount);
             for (var i = 0; i < GameConstant.StageRowCount; ++i)
                 StageNodeData.Add(new List<StageNode>(GameConstant.RowBubbMaxNum));
@@ -230,7 +231,7 @@ namespace Logic
             }
 
             targetNode.BubbType = _lazyFlyBubble.Value.BubbType == BubbType.Colorful
-                                      ? GetRandomStageBubbType()
+                                      ? BubbTypeUtil.GetRandomStageType()
                                       : _lazyFlyBubble.Value.BubbType;
             targetNode.ParentNode = targetNode;
             _parentRecords.Add(targetNode, new HashSet<StageNode> {targetNode});
@@ -423,12 +424,6 @@ namespace Logic
 
         private void SetLevelResult(LevelResult result)
         {
-        }
-
-
-        private BubbType GetRandomStageBubbType()
-        {
-            return (BubbType) UnityEngine.Random.Range((int) BubbType.Orange, (int) BubbType.Colorful);
         }
 
         private void RefreshStageNode(int row, int col, BubbType type)

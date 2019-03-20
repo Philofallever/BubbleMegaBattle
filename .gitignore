@@ -271,3 +271,7 @@ __pycache__/
 
 /out
 /ArtWork
+/Assembly-CSharp.csproj
+/Assembly-CSharp-firstpass.csproj
+/Assembly-CSharp-Editor.csproj
+/Assembly-CSharp-Editor-firstpass.csproj

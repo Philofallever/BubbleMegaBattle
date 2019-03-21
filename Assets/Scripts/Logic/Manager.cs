@@ -40,7 +40,6 @@ namespace Logic
         public        StageAnchorData       StageAnchorData { get; private set; } // 舞台及锚点数据
         public        List<List<StageNode>> StageNodeData   { get; private set; } // 舞台Node数据
 
-        [SerializeField]
         private Dictionary<StageNode, HashSet<StageNode>> _parentRecords;  // 同色泡泡记录表(并查集)
         private List<StageBubble>                         _bubbsCache;     // Bubbles缓存
         private HashSet<StageNode>                        _nodesCache;     // Nodes缓存
@@ -90,15 +89,14 @@ namespace Logic
                     var cfgClr = row < initBubbs.Length && col < initBubbs[row].Length ? initBubbs[row][col] : BubbType.Empty;
                     var node   = new StageNode {Row = row, Col = col, BubbType = cfgClr, AnchorPos = StageAnchorData[row, col]};
                     StageNodeData[row].Add(node);
-                    SpawnStageBubble(node,true);
                 }
             }
 
-            //foreach (var rowNodes in StageNodeData)
-            //{
-            //    foreach (var node in rowNodes)
-            //        SpawnStageBubble(node);
-            //}
+            foreach (var rowNodes in StageNodeData)
+            {
+                foreach (var node in rowNodes)
+                    SpawnStageBubble(node);
+            }
 
             _gamePanel.SpawnWaitBubble();
         }
@@ -110,25 +108,34 @@ namespace Logic
         }
 
         // 在某个Node生成泡泡,并更新并查集
-        private void SpawnStageBubble(StageNode node,bool ignoreLow = false)
+        private void SpawnStageBubble(StageNode node)
         {
             if (node.BubbType == BubbType.Empty || node.BubbType == BubbType.Colorful) return;
 
             // 遍历周围的泡泡,重设parent
             foreach (var sideNode in node)
             {
-
-
                 if (sideNode?.BubbType == node.BubbType)
                 {
                     // 已经是一个集合
                     if (sideNode.ParentNode == node.ParentNode)
                         continue;
 
-                    if (node.ParentNode == null)
+                    if (sideNode.ParentNode == null && node.ParentNode == null)
+                    {
+                        node.ParentNode      = node;
+                        sideNode.ParentNode  = node;
+                        _parentRecords[node] = new HashSet<StageNode>() {node, sideNode};
+                    }
+                    else if (sideNode.ParentNode != null && node.ParentNode == null)
                     {
                         node.ParentNode = sideNode.ParentNode;
-                        _parentRecords[node.ParentNode].Add(node);
+                        _parentRecords[sideNode.ParentNode].Add(node);
+                    }
+                    else if (sideNode.ParentNode == null && node.ParentNode != null)
+                    {
+                        sideNode.ParentNode = node.ParentNode;
+                        _parentRecords[node.ParentNode].Add(sideNode);
                     }
                     else
                         CombineParentSet(sideNode.ParentNode, node.ParentNode);
@@ -149,14 +156,6 @@ namespace Logic
         // 合并parent
         private void CombineParentSet(StageNode parent1, StageNode parent2)
         {
-            if (parent1== null || parent2 == null)
-            {
-                print($"{parent1?.Row} {parent1?.Col}");
-                print($"{parent2?.Row} {parent2?.Col}");
-
-            }
-
-
             var parent = parent2.Row < parent1.Row ? parent2 : parent1;
             var child  = parent2.Row < parent1.Row ? parent1 : parent2;
             foreach (var node in _parentRecords[child])
@@ -239,9 +238,9 @@ namespace Logic
 
         private void WipeBubbleAfterCollide(StageNode parentNode)
         {
+            _gamePanel.SpawnWaitBubble();
             if (_parentRecords[parentNode].Count < GameConstant.BubbWipeThreshold)
             {
-                _gamePanel.SpawnWaitBubble();
                 return;
             }
 

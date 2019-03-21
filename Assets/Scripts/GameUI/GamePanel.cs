@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using GamePrefab;
+using Config;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -14,7 +13,6 @@ namespace GameUI
         [SerializeField, LabelText("待发射的泡泡")]
         private WaitingBubble _waitingBubble;
 
-
         [Button]
         private void SpawnRandomBubble()
         {
@@ -24,6 +22,9 @@ namespace GameUI
         [Button]
         public void SpawnWaitBubble()
         {
+            if (_randomBubble.BubbType == BubbType.Empty)
+                _randomBubble.Respawn();
+
             StartCoroutine(WaitAndSpawnRandomBubb());
 
             IEnumerator WaitAndSpawnRandomBubb()

@@ -883,6 +883,7 @@ GameObject:
   m_Component:
   - component: {fileID: 953559768}
   - component: {fileID: 953559769}
+  - component: {fileID: 953559770}
   m_Layer: 0
   m_Name: GamePanel
   m_TagString: Untagged
@@ -921,6 +922,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 953559767}
   m_CullTransparentMesh: 0
+--- !u!114 &953559770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953559767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f386661519bfce4a88a7e998b2a5bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _randomBubble: {fileID: 330741882}
+  _waitingBubble: {fileID: 1505367287}
 --- !u!1 &1005554273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,13 +1065,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stageBubbParent: {fileID: 498599676}
-  _randomBubble: {fileID: 330741882}
-  _waitingBubble: {fileID: 1505367287}
-  _stageBubble: {fileID: 7466745894316879108, guid: f2c01bd5f120c3c4bbe3d78c44143b40,
-    type: 3}
-  _flyBubble: {fileID: 8248309519802708038, guid: f155f582abac4834e940add7b58ec027,
-    type: 3}
   _gameCfg: {fileID: 11400000, guid: d5c36639525e97e41858d9cb8da63dda, type: 2}
+  _startPanel: {fileID: 0}
+  _gamePanel: {fileID: 953559770}
 --- !u!4 &1050209545
 Transform:
   m_ObjectHideFlags: 0

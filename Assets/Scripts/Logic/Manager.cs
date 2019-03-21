@@ -6,31 +6,29 @@ using System.Threading;
 using Config;
 using DG.Tweening;
 using GamePrefab;
+using GameUI;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityRandom = UnityEngine.Random;
 
 namespace Logic
 {
+    /* StageNode负责舞台数据部分,StageBubble是预设实例,事实上二个数据合并到一起会
+     * 更好,另外StageBubble最好是可以Recycle.
+     */
     public class Manager : MonoBehaviour
     {
         [SerializeField, LabelText("舞台泡泡Parent")]
         private Transform _stageBubbParent;
 
-        [SerializeField, LabelText("随机泡泡")]
-        private RandomBubble _randomBubble;
-
-        [SerializeField, LabelText("待发射的泡泡")]
-        private WaitingBubble _waitingBubble;
-
-        [SerializeField, LabelText("舞台泡泡")]
-        private GameObject _stageBubble;
-
-        [SerializeField, LabelText("飞行中的球")]
-        private GameObject _flyBubble;
-
         [SerializeField, LabelText("游戏配置")]
         private GameCfg _gameCfg;
+
+        [Header("UI界面"), SerializeField, LabelText("启动界面")]
+        private GameObject _startPanel;
+
+        [SerializeField, LabelText("游戏界面")]
+        private GamePanel _gamePanel;
 
         // ReSharper disable once ConvertToAutoProperty
         public  GameCfg         GameCfg => _gameCfg;
@@ -39,9 +37,10 @@ namespace Logic
         public static Manager               Instance        { get; private set; }
         public        int                   Level           { get; private set; }
         public        int                   FlyCount        { get; private set; } // 发射次数
-        public        StageAnchorData       StageAnchorData { get; private set; }
-        public        List<List<StageNode>> StageNodeData   { get; private set; }
+        public        StageAnchorData       StageAnchorData { get; private set; } // 舞台及锚点数据
+        public        List<List<StageNode>> StageNodeData   { get; private set; } // 舞台Node数据
 
+        [SerializeField]
         private Dictionary<StageNode, HashSet<StageNode>> _parentRecords;  // 同色泡泡记录表(并查集)
         private List<StageBubble>                         _bubbsCache;     // Bubbles缓存
         private HashSet<StageNode>                        _nodesCache;     // Nodes缓存
@@ -57,7 +56,7 @@ namespace Logic
         protected void Awake()
         {
             Instance       = this;
-            _lazyFlyBubble = new Lazy<FlyBubble>(() => Instantiate(_flyBubble).GetComponent<FlyBubble>());
+            _lazyFlyBubble = new Lazy<FlyBubble>(() => Instantiate(GameCfg.FlyBubble).GetComponent<FlyBubble>());
             StageNodeData  = new List<List<StageNode>>(GameConstant.StageRowCount);
             for (var i = 0; i < GameConstant.StageRowCount; ++i)
                 StageNodeData.Add(new List<StageNode>(GameConstant.RowBubbMaxNum));
@@ -91,83 +90,85 @@ namespace Logic
                     var cfgClr = row < initBubbs.Length && col < initBubbs[row].Length ? initBubbs[row][col] : BubbType.Empty;
                     var node   = new StageNode {Row = row, Col = col, BubbType = cfgClr, AnchorPos = StageAnchorData[row, col]};
                     StageNodeData[row].Add(node);
-                    if (cfgClr == BubbType.Empty) continue;
-
-                    node.ParentNode      = node;
-                    _parentRecords[node] = new HashSet<StageNode> {node};
+                    SpawnStageBubble(node,true);
                 }
             }
 
-            foreach (var rowNodes in StageNodeData)
-            {
-                foreach (var node in rowNodes)
-                    SpawnStageBubble(node);
-            }
+            //foreach (var rowNodes in StageNodeData)
+            //{
+            //    foreach (var node in rowNodes)
+            //        SpawnStageBubble(node);
+            //}
 
-            SpawnRandomBubble();
-            SpawnWaitBubble();
+            _gamePanel.SpawnWaitBubble();
         }
 
-        private void SpawnStageBubble(StageNode node)
+        public void SpawnFlyBubble(BubbType type, Vector2 flyDir, Vector2 position)
+        {
+            ++FlyCount;
+            _lazyFlyBubble.Value.Respawn(type, flyDir, position);
+        }
+
+        // 在某个Node生成泡泡,并更新并查集
+        private void SpawnStageBubble(StageNode node,bool ignoreLow = false)
         {
             if (node.BubbType == BubbType.Empty || node.BubbType == BubbType.Colorful) return;
-
-            var stageBubble = Instantiate(_stageBubble, node.AnchorPos, Quaternion.identity, _stageBubbParent).GetComponent<StageBubble>();
-            stageBubble.Respawn(node);
 
             // 遍历周围的泡泡,重设parent
             foreach (var sideNode in node)
             {
-                if (sideNode == null || sideNode.BubbType != node.BubbType)
-                    continue;
 
-                if (sideNode.ParentNode == node.ParentNode)
-                    continue;
 
-                CombineParentSet(sideNode.ParentNode, node.ParentNode);
+                if (sideNode?.BubbType == node.BubbType)
+                {
+                    // 已经是一个集合
+                    if (sideNode.ParentNode == node.ParentNode)
+                        continue;
+
+                    if (node.ParentNode == null)
+                    {
+                        node.ParentNode = sideNode.ParentNode;
+                        _parentRecords[node.ParentNode].Add(node);
+                    }
+                    else
+                        CombineParentSet(sideNode.ParentNode, node.ParentNode);
+                }
             }
 
-            //foreach (var record in _parentRecords)
-            //{
-            //    print($"{record.Key.BubbType}:({record.Key.Row},{record.Key.Col}) => {record.Value.Count}");
-            //}
-        }
-
-        [Button]
-        private void SpawnRandomBubble()
-        {
-            _randomBubble.Respawn();
-        }
-
-        [Button]
-        private void SpawnWaitBubble()
-        {
-            StartCoroutine(WaitAndSpawnRandomBubb());
-
-            IEnumerator WaitAndSpawnRandomBubb()
+            // 如果周围没同色的
+            if (node.ParentNode == null)
             {
-                _randomBubble.PlayMoveAnim(out var animDuration);
-                yield return new WaitForSeconds(animDuration);
-
-                _waitingBubble.Respawn(_randomBubble.BubbType, out animDuration);
-
-                yield return new WaitForSeconds(animDuration);
-
-                SpawnRandomBubble();
+                node.ParentNode      = node;
+                _parentRecords[node] = new HashSet<StageNode>() {node};
             }
+
+            var stageBubble = Instantiate(GameCfg.StageBubble, node.AnchorPos, Quaternion.identity, _stageBubbParent).GetComponent<StageBubble>();
+            stageBubble.Respawn(node);
         }
 
-        public void SpawnFlyBubble()
+        // 合并parent
+        private void CombineParentSet(StageNode parent1, StageNode parent2)
         {
-            var type   = _waitingBubble.BubbType;
-            var flyDir = _waitingBubble.FlyDirection;
-            _lazyFlyBubble.Value.Respawn(type, flyDir, _waitingBubble.transform.position);
-            ++FlyCount;
+            if (parent1== null || parent2 == null)
+            {
+                print($"{parent1?.Row} {parent1?.Col}");
+                print($"{parent2?.Row} {parent2?.Col}");
+
+            }
+
+
+            var parent = parent2.Row < parent1.Row ? parent2 : parent1;
+            var child  = parent2.Row < parent1.Row ? parent1 : parent2;
+            foreach (var node in _parentRecords[child])
+                node.ParentNode = parent;
+            _parentRecords[parent].UnionWith(_parentRecords[child]);
+            _parentRecords.Remove(child);
         }
 
-        #region 泡泡碰撞,消除,下移
 
-        // 碰撞后回调
+        #region 泡泡碰撞,消除,下移:碰撞后,判断能消除,消除后判断是否能下移,结束后产生新的待发射泡泡
+
+        // 碰撞到泡泡回调
         public void OnCollideStageBubble(Collision2D collision)
         {
             var involveBubb  = collision.gameObject.GetComponent<StageBubble>();
@@ -194,17 +195,16 @@ namespace Logic
 
             if (targetNode == null)
             {
-                Debug.LogError("找不到附件的空泡泡位置!");
+                SetLevelResult(LevelResult.FailToFindNode);
                 return;
             }
 
-            targetNode.BubbType   = _lazyFlyBubble.Value.BubbType == BubbType.Colorful ? involveNode.BubbType : _lazyFlyBubble.Value.BubbType;
-            targetNode.ParentNode = targetNode;
-            _parentRecords.Add(targetNode, new HashSet<StageNode> {targetNode});
+            targetNode.BubbType = _lazyFlyBubble.Value.BubbType == BubbType.Colorful ? involveNode.BubbType : _lazyFlyBubble.Value.BubbType;
             SpawnStageBubble(targetNode);
             WipeBubbleAfterCollide(targetNode.ParentNode);
         }
 
+        // 碰到Stage上边缘
         public void OnCollideStageTopEdge(Collision2D collision)
         {
             var       contactPoint = collision.contacts[0].point;
@@ -226,15 +226,13 @@ namespace Logic
 
             if (targetNode == null)
             {
-                Debug.LogError("找不到附件的空泡泡位置!");
+                SetLevelResult(LevelResult.FailToFindNode);
                 return;
             }
 
             targetNode.BubbType = _lazyFlyBubble.Value.BubbType == BubbType.Colorful
                                       ? BubbTypeUtil.GetRandomStageType()
                                       : _lazyFlyBubble.Value.BubbType;
-            targetNode.ParentNode = targetNode;
-            _parentRecords.Add(targetNode, new HashSet<StageNode> {targetNode});
             SpawnStageBubble(targetNode);
             WipeBubbleAfterCollide(targetNode.ParentNode);
         }
@@ -243,7 +241,7 @@ namespace Logic
         {
             if (_parentRecords[parentNode].Count < GameConstant.BubbWipeThreshold)
             {
-                SpawnWaitBubble();
+                _gamePanel.SpawnWaitBubble();
                 return;
             }
 
@@ -305,7 +303,6 @@ namespace Logic
                 bubble.PlayWipeAnim();
 
             _bubbsCache.Clear();
-            SpawnWaitBubble();
 
             // 用到了cache所以写成局部函数
             bool IsBubbLinkToTop(StageNode node)
@@ -424,29 +421,6 @@ namespace Logic
 
         private void SetLevelResult(LevelResult result)
         {
-        }
-
-        private void RefreshStageNode(int row, int col, BubbType type)
-        {
-            var stageNode = StageNodeData[row][col];
-            if (stageNode.BubbType == BubbType.Empty)
-            {
-                stageNode.BubbType = type;
-                SpawnStageBubble(stageNode);
-            }
-
-            stageNode.BubbType = type;
-        }
-
-        // 合并parent
-        private void CombineParentSet(StageNode parent1, StageNode parent2)
-        {
-            var parent = parent2.Row < parent1.Row ? parent2 : parent1;
-            var child  = parent2.Row < parent1.Row ? parent1 : parent2;
-            foreach (var node in _parentRecords[child])
-                node.ParentNode = parent;
-            _parentRecords[parent].UnionWith(_parentRecords[child]);
-            _parentRecords.Remove(child);
         }
     }
 }

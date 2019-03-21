@@ -24,6 +24,7 @@ namespace Logic
 
             if (rowCount == GameConstant.RowBubbMaxNum)
                 return Col == 0 ? null : nodes[Row - 1][Col - 1];
+
             return nodes[Row - 1][Col];
         }
 

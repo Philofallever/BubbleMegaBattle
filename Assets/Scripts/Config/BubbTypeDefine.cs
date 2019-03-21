@@ -21,5 +21,10 @@ namespace Config
         {
             return (BubbType) Random.Range((int) BubbType.Orange, (int) BubbType.Colorful);
         }
+
+        public static BubbType GetRandomRandType()
+        {
+            return (BubbType) UnityEngine.Random.Range((int) BubbType.Orange, (int) BubbType.Colorful + 1);
+        }
     }
 }

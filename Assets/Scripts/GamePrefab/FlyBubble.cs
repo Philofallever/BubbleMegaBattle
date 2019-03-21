@@ -13,7 +13,6 @@ namespace GamePrefab
 
         public BubbType BubbType { get; private set; }
 
-
         private void Awake()
         {
             _renderer  = GetComponent<SpriteRenderer>();

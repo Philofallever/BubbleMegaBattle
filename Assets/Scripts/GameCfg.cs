@@ -45,23 +45,29 @@ namespace Config
 
     public class GameCfg : SerializedScriptableObject
     {
-        [LabelText("游戏规则"), Multiline(5)]
+        [TabGroup("通用配置"), LabelText("游戏规则"), Multiline(5)]
         public string RuleDesc;
 
-        [LabelText("泡泡精灵")]
-        public Sprite[] BubbSprites;
-
-        [LabelText("飞行气泡速度")]
+        [TabGroup("通用配置"), LabelText("飞行气泡速度")]
         public float FlyBubbleSpeed;
 
-        [LabelText("额外奖励分")]
+        [TabGroup("通用配置"), LabelText("额外奖励分")]
         public int ExtraGrade;
 
-        [LabelText("关卡最大数*")]
+        [TabGroup("关卡配置"), LabelText("关卡最大数*")]
         public int MaxLevel;
 
-        [LabelText("关卡配置")]
+        [TabGroup("关卡配置"), LabelText("关卡配置")]
         public LevelTunning[] LevelTunnings;
+
+        [TabGroup("游戏资源"), LabelText("泡泡精灵")]
+        public Sprite[] BubbSprites;
+
+        [TabGroup("游戏资源"), LabelText("舞台泡泡")]
+        public GameObject StageBubble;
+
+        [TabGroup("游戏资源"), LabelText("飞行中的球")]
+        public GameObject FlyBubble;
 
         [Button("保存", ButtonSizes.Medium)]
         private void Save()

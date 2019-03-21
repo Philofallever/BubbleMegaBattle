@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-namespace GamePrefab
+namespace GameUI
 {
     // 等待发射的泡泡,响应玩家UI操作,决定飞行方向
     public class WaitingBubble : MonoBehaviour
@@ -20,26 +20,29 @@ namespace GamePrefab
         [SerializeField, LabelText("发射线")]
         private LineRenderer _lineRenderer;
 
-        private const float _punchDuration     = 0.2f;
-        private const float _lineMaterialScale = 11.8f;
-
-        private Image    _image;
-        public  BubbType BubbType     { get; private set; }
-        public  Vector2  FlyDirection { get; private set; }
+        private const float     _punchDuration     = 0.2f;
+        private const float     _lineMaterialScale = 11.8f;
+        private       Tweener   _punchAnim;
+        private       Image     _image;
+        private       GamePanel _gamePanel;
+        public        BubbType  BubbType     { get; private set; }
+        public        Vector2   FlyDirection { get; private set; }
 
         private void Awake()
         {
             _image = GetComponent<Image>();
             _lineRenderer.material.SetTextureScale("_MainTex", new Vector2(_lineMaterialScale, 1f));
+            _punchAnim = _image.rectTransform.DOPunchAnchorPos(Vector2.down * 20, _punchDuration, 5, 0).SetRelative(true).Pause().SetAutoKill(false);
+            _gamePanel = GetComponentInParent<GamePanel>();
         }
 
-        public void Respawn(BubbType type, out float animDuration)
+        public YieldInstruction Respawn(BubbType type)
         {
             gameObject.SetActive(true);
-            animDuration  = _punchDuration;
             BubbType      = type;
             _image.sprite = Manager.Instance.GameCfg.BubbSprites[(int) BubbType];
-            _image.rectTransform.DOPunchAnchorPos(Vector2.down * 20, _punchDuration, 5, 0).SetRelative(true);
+            _punchAnim.Restart();
+            return _punchAnim.WaitForCompletion();
         }
 
         #region 拖动操作相关
@@ -89,7 +92,7 @@ namespace GamePrefab
         {
             gameObject.SetActive(false);
             _lineRenderer.positionCount = 0;
-            Manager.Instance.SpawnFlyBubble();
+            Manager.Instance.SpawnFlyBubble(BubbType, FlyDirection, transform.position);
         }
 
         #endregion

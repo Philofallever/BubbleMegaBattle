@@ -199,8 +199,7 @@ namespace Logic
             }
 
             targetNode.BubbType = _lazyFlyBubble.Value.BubbType == BubbType.Colorful ? involveNode.BubbType : _lazyFlyBubble.Value.BubbType;
-            SpawnStageBubble(targetNode);
-            WipeBubbleAfterCollide(targetNode.ParentNode);
+            OnFindNodeSuccAfterCollide(targetNode);
         }
 
         // 碰到Stage上边缘
@@ -232,26 +231,39 @@ namespace Logic
             targetNode.BubbType = _lazyFlyBubble.Value.BubbType == BubbType.Colorful
                                       ? BubbTypeUtil.GetRandomStageType()
                                       : _lazyFlyBubble.Value.BubbType;
-            SpawnStageBubble(targetNode);
-            WipeBubbleAfterCollide(targetNode.ParentNode);
+            OnFindNodeSuccAfterCollide(targetNode);
         }
 
-        private void WipeBubbleAfterCollide(StageNode parentNode)
+        private void OnFindNodeSuccAfterCollide(StageNode stageNode)
         {
-            _gamePanel.SpawnWaitBubble();
-            if (_parentRecords[parentNode].Count < GameConstant.BubbWipeThreshold)
+            SpawnStageBubble(stageNode);
+            var wipeCount = WipeBubbleAfterCollide(stageNode);
+            if (wipeCount == 0)
             {
-                return;
+            }
+            else
+            {
             }
 
-            //  要消除的泡泡
-            var wipeNodes = _parentRecords[parentNode];
-            _parentRecords.Remove(parentNode);
-            foreach (var node in wipeNodes)
+            // 下移
+            if (FlyCount % GameCfg.LevelTunnings[Level].MoveDownFlyTimes == 0)
             {
-                node.BubbType   = BubbType.Empty;
-                node.ParentNode = null;
+                var isMoveSucc = MoveBubbDown();
+                if (isMoveSucc)
+                    _gamePanel.SpawnWaitBubble();
+                else
+                    SetLevelResult(LevelResult.FailToMoveDown);
             }
+            else
+                _gamePanel.SpawnWaitBubble();
+        }
+
+        // 消除泡泡,返回消除的个数
+        private int WipeBubbleAfterCollide(StageNode stageNode)
+        {
+            var wipeNodes = _parentRecords[stageNode.ParentNode];
+            if (wipeNodes.Count < GameConstant.BubbWipeThreshold)
+                return 0;
 
             // 没有挂载点的泡泡
             for (var row = 0; row < GameConstant.StageRowCount; ++row)
@@ -259,82 +271,80 @@ namespace Logic
                 for (var col = 0; col < StageNodeData[row].Count; ++col)
                 {
                     var node = StageNodeData[row][col];
-                    if (node.BubbType == BubbType.Empty) continue;
-
-                    if (!IsBubbLinkToTop(node))
-                    {
-                        var record = _parentRecords[node.ParentNode];
-                        record.Remove(node);
-                        // 恰好是并查集父节点
-                        if (node.ParentNode == node)
-                        {
-                            _parentRecords.Remove(node);
-
-                            if (record.Count != 0)
-                            {
-                                StageNode newParent = null;
-                                foreach (var childNode in record)
-                                {
-                                    if (newParent == null) newParent = childNode;
-
-                                    childNode.ParentNode = newParent;
-                                }
-
-                                _parentRecords.Add(newParent, record);
-                            }
-                        }
-
-                        node.BubbType   = BubbType.Empty;
-                        node.ParentNode = null;
-                        wipeNodes.Add(node);
-                    }
-
-                    _nodesPathCache.Clear();
+                    GenLinkDataByBubb(node);
                 }
             }
 
-            _nodesCache.Clear();
-            // 消除的泡泡
-            _stageBubbParent.GetComponentsInChildren(_bubbsCache);
-            _bubbsCache.RemoveAll(bubb => !wipeNodes.Contains(bubb.StageNode));
-
-            foreach (var bubble in _bubbsCache)
-                bubble.PlayWipeAnim();
-
-            _bubbsCache.Clear();
-
-            // 用到了cache所以写成局部函数
-            bool IsBubbLinkToTop(StageNode node)
+            _nodesCache.Clear(); // GenLinkDataByBubb 用到了缓存
+            foreach (var wipe in wipeNodes)
             {
-                if (node == null || node.BubbType == BubbType.Empty) return false;
+                if (wipe.ParentNode == wipe)
+                    _parentRecords.Remove(wipe);
 
-                if (!_nodesPathCache.Add(node)) // 已经查找过的点
+                wipe.BubbType   = BubbType.Empty;
+                wipe.ParentNode = null;
+            }
+
+            _stageBubbParent.GetComponentsInChildren<StageBubble>(_bubbsCache);
+            _bubbsCache.RemoveAll(bubb => !wipeNodes.Contains(bubb.StageNode));
+            foreach (var bubb in _bubbsCache)
+                bubb.PlayWipeAnim();
+
+            return wipeNodes.Count;
+
+            #region 局部函数
+
+            // 从某个泡泡生成连接数据
+            void GenLinkDataByBubb(StageNode node)
+            {
+                if (node.BubbType == BubbType.Empty || _nodesCache.Contains(node) || wipeNodes.Contains(node))
+                    return;
+
+                var isLink = IsBubbLinkToTop(node, _nodesPathCache);
+                if (isLink)
+                    _nodesCache.UnionWith(_nodesPathCache);
+                else
+                    wipeNodes.UnionWith(_nodesPathCache);
+                _nodesPathCache.Clear();
+            }
+
+            // 判断某个泡泡是否连到顶部
+            bool IsBubbLinkToTop(StageNode node, HashSet<StageNode> path)
+            {
+                if (!path.Add(node) || wipeNodes.Contains(node))
                     return false;
 
-                if (node.Row == 0) // 第一排
-                {
-                    _nodesCache.Add(node);
-                    return true;
-                }
-
-                if (_nodesCache.Contains(node))
+                if (node.Row == 0 || wipeNodes.Contains(node))
                     return true;
 
                 foreach (var sideNode in node)
                 {
                     if (sideNode == null || sideNode.BubbType == BubbType.Empty) continue;
 
-                    var isLink = IsBubbLinkToTop(sideNode);
+                    var isLink = IsBubbLinkToTop(sideNode, path);
                     if (isLink)
-                    {
-                        _nodesCache.Add(node);
                         return true;
-                    }
                 }
 
                 return false;
             }
+
+            #endregion
         }
+
+        private bool MoveBubbDown()
+        {
+            // 如果不能下移则游戏结束
+            var lastRow = StageNodeData[GameConstant.StageRowCount - GameConstant.MoveDownRowNum];
+            if (lastRow.Exists(node => node.BubbType != BubbType.Empty))
+            {
+                SetLevelResult(LevelResult.FailToMoveDown);
+                return false;
+            }
+
+            return true;
+        }
+
 
         //private void TryMoveDown()
         //{
@@ -354,7 +364,7 @@ namespace Logic
         //        for (var col = 0; col < StageNodeData[row].Count; ++col)
         //        {
         //            StageNodeData[row][col].ParentNode = StageNodeData[row - 2][col].ParentNode;
-        //            StageNodeData[row][col].BubbType   = StageNodeData[row - 2][col].BubbType;
+        //            StageNodeData[row][col].BubbType = StageNodeData[row - 2][col].BubbType;
         //        }
         //    }
         //    // 生成新泡泡
@@ -364,7 +374,7 @@ namespace Logic
         //        var blowRow = StageNodeData[row + 1];
         //        foreach (var blowNode in blowRow)
         //        {
-        //            var upLeft  = blowNode.GetUpLeft();
+        //            var upLeft = blowNode.GetUpLeft();
         //            var upRight = blowNode.GetUpRight();
 
         //            if (blowNode.BubbType == BubbType.Empty)
@@ -378,8 +388,8 @@ namespace Logic
 
         //                    if (upLeft.BubbType != BubbType.Empty)
         //                    {
-        //                        upLeft.ParentNode      = upRight;
-        //                        _parentRecords[upLeft] = new HashSet<StageNode>() {upLeft};
+        //                        upLeft.ParentNode = upRight;
+        //                        _parentRecords[upLeft] = new HashSet<StageNode>() { upLeft };
         //                    }
         //                }
 
@@ -391,8 +401,8 @@ namespace Logic
 
         //                    if (upRight.BubbType != BubbType.Empty)
         //                    {
-        //                        upRight.ParentNode      = upRight;
-        //                        _parentRecords[upRight] = new HashSet<StageNode>() {upRight};
+        //                        upRight.ParentNode = upRight;
+        //                        _parentRecords[upRight] = new HashSet<StageNode>() { upRight };
         //                    }
         //                }
         //            }
@@ -402,11 +412,11 @@ namespace Logic
         //                if (upLeft?.BubbType == BubbType.Empty)
         //                {
         //                    upLeft.BubbType = GetRandomStageBubbType();
-        //                    upLeft.ParentNode      = upRight;
-        //                    _parentRecords[upLeft] = new HashSet<StageNode>() {upLeft};
+        //                    upLeft.ParentNode = upRight;
+        //                    _parentRecords[upLeft] = new HashSet<StageNode>() { upLeft };
         //                }
 
-        //                if(upRight?.BubbType == BubbType.Empty)
+        //                if (upRight?.BubbType == BubbType.Empty)
 
 
         //            }

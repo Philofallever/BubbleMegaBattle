@@ -35,7 +35,9 @@ namespace GameUI
         public void Respawn()
         {
             gameObject.SetActive(true);
-            BubbType = BubbTypeUtil.GetRandomRandType();
+            var lvl = Manager.Instance.Level;
+            var weight = Manager.Instance.GameCfg.LevelTunnings[lvl].WaitBubbWeights;
+            BubbType = weight.SelectByWeight();
             //BubbType = BubbType.Colorful;
             var cfg = Manager.Instance.GameCfg;
             _img.sprite = cfg.BubbSprites[(int) BubbType];

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.PerformanceData;
 using System.Globalization;
 using System.Threading;
 using Config;
@@ -115,12 +116,10 @@ namespace Logic
             // 遍历周围的泡泡,重设parent
             foreach (var sideNode in node)
             {
+                // 同色的合并
                 if (sideNode?.BubbType == node.BubbType)
                 {
-                    // 已经是一个集合
-                    if (sideNode.ParentNode == node.ParentNode)
-                        continue;
-
+                    // ReSharper disable once PossibleNullReferenceException
                     if (sideNode.ParentNode == null && node.ParentNode == null)
                     {
                         node.ParentNode      = node;
@@ -137,7 +136,7 @@ namespace Logic
                         sideNode.ParentNode = node.ParentNode;
                         _parentRecords[node.ParentNode].Add(sideNode);
                     }
-                    else
+                    else if (sideNode.ParentNode != node.ParentNode)
                         CombineParentSet(sideNode.ParentNode, node.ParentNode);
                 }
             }
@@ -163,7 +162,6 @@ namespace Logic
             _parentRecords[parent].UnionWith(_parentRecords[child]);
             _parentRecords.Remove(child);
         }
-
 
         #region 泡泡碰撞,消除,下移:碰撞后,判断能消除,消除后判断是否能下移,结束后产生新的待发射泡泡
 
@@ -228,9 +226,14 @@ namespace Logic
                 return;
             }
 
-            targetNode.BubbType = _lazyFlyBubble.Value.BubbType == BubbType.Colorful
-                                      ? BubbTypeUtil.GetRandomStageType()
-                                      : _lazyFlyBubble.Value.BubbType;
+            if (_lazyFlyBubble.Value.BubbType == BubbType.Colorful)
+            {
+                var weights = GameCfg.LevelTunnings[Level].StageBubbWeights;
+                targetNode.BubbType = weights.SelectByWeight();
+            }
+            else
+                targetNode.BubbType = _lazyFlyBubble.Value.BubbType;
+
             OnFindNodeSuccAfterCollide(targetNode);
         }
 
@@ -238,19 +241,25 @@ namespace Logic
         {
             SpawnStageBubble(stageNode);
             var wipeCount = WipeBubbleAfterCollide(stageNode);
-            if (wipeCount == 0)
+            if (wipeCount > 0)
             {
-            }
-            else
-            {
+                // jiafen 
+                
+                // tongguan?
+
+
             }
 
             // 下移
-            if (FlyCount % GameCfg.LevelTunnings[Level].MoveDownFlyTimes == 0)
+
+            var cfgTimes = GameCfg.LevelTunnings[Level].MoveDownFlyTimes;
+            if (cfgTimes != 0 && FlyCount % cfgTimes == 0)
             {
-                var isMoveSucc = MoveBubbDown();
-                if (isMoveSucc)
-                    _gamePanel.SpawnWaitBubble();
+                if (CanMoveDown())
+                {
+                    var leftBubbs = _stageBubbParent.childCount - wipeCount;
+                    StartCoroutine(MoveDownWait(leftBubbs));
+                }
                 else
                     SetLevelResult(LevelResult.FailToMoveDown);
             }
@@ -332,104 +341,94 @@ namespace Logic
             #endregion
         }
 
-        private bool MoveBubbDown()
+        private bool CanMoveDown()
         {
-            // 如果不能下移则游戏结束
-            var lastRow = StageNodeData[GameConstant.StageRowCount - GameConstant.MoveDownRowNum];
-            if (lastRow.Exists(node => node.BubbType != BubbType.Empty))
-            {
-                SetLevelResult(LevelResult.FailToMoveDown);
+            var lastMoveRow = GameConstant.StageRowCount - GameConstant.MoveDownRowNum;
+            if (StageNodeData[lastMoveRow].Exists(node => node.BubbType != BubbType.Empty))
                 return false;
-            }
-
-            return true;
+            else
+                return true;
         }
 
+        private IEnumerator MoveDownWait(int leftBubbCount)
+        {
+            yield return new WaitWhile(() => _stageBubbParent.childCount > leftBubbCount);
 
-        //private void TryMoveDown()
-        //{
-        //    if (FlyCount % GameCfg.LevelTunnings[Level].MoveDownFlyTimes != 0) return;
+            MoveBubbDown();
+            _gamePanel.SpawnWaitBubble();
+        }
 
-        //    // 如果不能下移则游戏结束
-        //    var lastRow = StageNodeData[GameConstant.StageRowCount - GameConstant.MoveDowRowNum - 1];
-        //    if (lastRow.Exists(node => node.BubbType != BubbType.Empty))
-        //    {
-        //        SetLevelResult(LevelResult.FailToMoveDown);
-        //        return;
-        //    }
+        private void MoveBubbDown()
+        {
+            var count       = GameConstant.MoveDownRowNum;
+            var lastMoveRow = GameConstant.StageRowCount - count;
+            var emptyRows   = StageNodeData.GetRange(lastMoveRow, count);
+            StageNodeData.RemoveRange(lastMoveRow, count);
+            StageNodeData.InsertRange(0, emptyRows);
 
-        //    _stageBubbParent.GetComponentsInChildren<StageBubble>(_bubbsCache);
-        //    for (var row = GameConstant.StageRowCount - 1; row >= GameConstant.MoveDowRowNum; --row)
-        //    {
-        //        for (var col = 0; col < StageNodeData[row].Count; ++col)
-        //        {
-        //            StageNodeData[row][col].ParentNode = StageNodeData[row - 2][col].ParentNode;
-        //            StageNodeData[row][col].BubbType = StageNodeData[row - 2][col].BubbType;
-        //        }
-        //    }
-        //    // 生成新泡泡
+            // 更新锚点数据
+            for (var row = 0; row < StageNodeData.Count; ++row)
+            {
+                var rowCount = StageAnchorData.GetRowAnchorsCount(row);
+                for (var col = 0; col < rowCount; ++col)
+                {
+                    var node = StageNodeData[row][col];
+                    node.Row       = row;
+                    node.Col       = col;
+                    node.AnchorPos = StageAnchorData[row, col];
+                }
+            }
 
-        //    for (var row = GameConstant.RowBubbMinNum - 1; row >= 0; --row)
-        //    {
-        //        var blowRow = StageNodeData[row + 1];
-        //        foreach (var blowNode in blowRow)
-        //        {
-        //            var upLeft = blowNode.GetUpLeft();
-        //            var upRight = blowNode.GetUpRight();
+            // 重设现有泡泡位置
+            _stageBubbParent.GetComponentsInChildren<StageBubble>(_bubbsCache);
+            foreach (var bubble in _bubbsCache)
+                bubble.transform.position = bubble.StageNode.AnchorPos;
 
-        //            if (blowNode.BubbType == BubbType.Empty)
-        //            {
-        //                if (upLeft?.BubbType == BubbType.Empty)
-        //                {
-        //                    upLeft.BubbType = UnityRandom.value > 1f / (Level + 1) ? GetRandomStageBubbType() : BubbType.Empty;
+            // 为空生成新的泡泡
+            for (var row = count - 1; row >= 0; --row)
+            {
+                for (var col = 0; col < StageNodeData[row].Count; ++col)
+                {
+                    var node = StageNodeData[row][col];
 
-        //                    if (upRight == null && upLeft.BubbType == BubbType.Empty)
-        //                        upLeft.BubbType = GetRandomStageBubbType();
+                    var bubbType = GameCfg.LevelTunnings[Level].StageBubbWeights.SelectByWeight();
+                    // 必需填充或者随机到填充,则填充
+                    if (IsMustFillNode(node) || GameCfg.LevelTunnings[Level].UnNecessaryFillRatio >= UnityRandom.value)
+                    {
+                        node.BubbType = bubbType;
+                        SpawnStageBubble(node);
+                    }
+                }
+            }
+        }
 
-        //                    if (upLeft.BubbType != BubbType.Empty)
-        //                    {
-        //                        upLeft.ParentNode = upRight;
-        //                        _parentRecords[upLeft] = new HashSet<StageNode>() { upLeft };
-        //                    }
-        //                }
+        private bool IsMustFillNode(StageNode node)
+        {
+            var downLeft  = node.GetDownLeft();
+            var downRight = node.GetDownRight();
 
-        //                if (upRight?.BubbType == BubbType.Empty)
-        //                {
-        //                    upRight.BubbType = UnityRandom.value < 1f / (Level + 1) ? upLeft?.BubbType ?? BubbType.Empty : BubbType.Empty;
-        //                    if (upLeft == null && upRight.BubbType == BubbType.Empty)
-        //                        upRight.BubbType = GetRandomStageBubbType();
+            if (downLeft != null && downLeft.BubbType != BubbType.Empty)
+            {
+                var downLeftUpLeft = downLeft.GetUpLeft();
+                if (downLeftUpLeft == null || downLeftUpLeft.BubbType == BubbType.Empty)
+                    return true;
+            }
 
-        //                    if (upRight.BubbType != BubbType.Empty)
-        //                    {
-        //                        upRight.ParentNode = upRight;
-        //                        _parentRecords[upRight] = new HashSet<StageNode>() { upRight };
-        //                    }
-        //                }
-        //            }
-        //            else
-        //            {
+            if (downRight != null && downRight.BubbType != BubbType.Empty)
+            {
+                var downRightUpRight = downRight.GetUpRight();
+                if (downRightUpRight == null || downRightUpRight.BubbType == BubbType.Empty)
+                    return true;
+            }
 
-        //                if (upLeft?.BubbType == BubbType.Empty)
-        //                {
-        //                    upLeft.BubbType = GetRandomStageBubbType();
-        //                    upLeft.ParentNode = upRight;
-        //                    _parentRecords[upLeft] = new HashSet<StageNode>() { upLeft };
-        //                }
-
-        //                if (upRight?.BubbType == BubbType.Empty)
-
-
-        //            }
-        //        }
-        //    }
-        //    foreach (var bubble in _bubbsCache)
-        //        bubble.MoveDown();
-        //}
+            return false;
+        }
 
         #endregion
 
         private void SetLevelResult(LevelResult result)
         {
+            print($"game over because of {result}");
         }
     }
 }

@@ -20,6 +20,9 @@ namespace GameUI
         [SerializeField, LabelText("发射线")]
         private LineRenderer _lineRenderer;
 
+        [SerializeField, LabelText("拖动泡泡")]
+        private Image _dragBubb;
+
         private const float     _punchDuration     = 0.2f;
         private const float     _lineMaterialScale = 11.8f;
         private       Tweener   _punchAnim;
@@ -52,6 +55,8 @@ namespace GameUI
             var startPos = Vector3.Scale(transform.position, new Vector3(1, 1, 0));
             _lineRenderer.positionCount = 1;
             _lineRenderer.SetPosition(0, startPos);
+            _dragBubb.sprite = _image.sprite;
+            _dragBubb.gameObject.SetActive(true);
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -59,9 +64,9 @@ namespace GameUI
             var panelRect = (RectTransform) transform.parent;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(panelRect, eventData.position, eventData.pressEventCamera, out var pos);
             var selfPos = ((RectTransform) transform).anchoredPosition;
-
             if (pos.y > selfPos.y) return;
 
+            _dragBubb.rectTransform.anchoredPosition = pos;
             var ray             = Physics2D.Raycast(transform.position, (selfPos - pos));
             var stageAnchorData = Manager.Instance.StageAnchorData;
 
@@ -91,6 +96,7 @@ namespace GameUI
         public void OnEndDrag(PointerEventData eventData)
         {
             gameObject.SetActive(false);
+            _dragBubb.gameObject.SetActive(false);
             _lineRenderer.positionCount = 0;
             Manager.Instance.SpawnFlyBubble(BubbType, FlyDirection, transform.position);
         }

@@ -12,6 +12,9 @@ namespace Config
         [LabelText("舞台样式")]
         public StageType StageType;
 
+        [LabelText("关卡名")]
+        public string Name;
+
         [LabelText("初始填充泡泡")]
         public BubbType[][] InitBubles;
 
@@ -53,10 +56,7 @@ namespace Config
         [TabGroup("通用配置"), LabelText("额外奖励分")]
         public int ExtraGrade;
 
-        [TabGroup("关卡配置"), LabelText("关卡最大数*")]
-        public int MaxLevel;
-
-        [TabGroup("关卡配置"), LabelText("关卡配置")]
+        [TabGroup("关卡配置"), LabelText("关卡配置"),ListDrawerSettings(ShowIndexLabels = true)]
         public LevelTunning[] LevelTunnings;
 
         [TabGroup("游戏资源"), LabelText("泡泡精灵")]

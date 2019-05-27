@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.PerformanceData;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Threading;
 using Config;
 using DG.Tweening;
@@ -14,6 +16,12 @@ using UnityRandom = UnityEngine.Random;
 
 namespace Logic
 {
+    public struct Record
+    {
+        public int Level;
+        public int Score;
+    }
+
     /* StageNode负责舞台数据部分,StageBubble是预设实例,事实上二个数据合并到一起会
      * 更好,另外StageBubble最好是可以Recycle.
      */
@@ -26,10 +34,12 @@ namespace Logic
         private GameCfg _gameCfg;
 
         [Header("UI界面"), SerializeField, LabelText("启动界面")]
-        private GameObject _startPanel;
+        private StartPanel _startPanel;
 
         [SerializeField, LabelText("游戏界面")]
         private GamePanel _gamePanel;
+
+        private AudioSource _audioSource;
 
         // ReSharper disable once ConvertToAutoProperty
         public  GameCfg         GameCfg => _gameCfg;
@@ -37,6 +47,8 @@ namespace Logic
 
         public static Manager               Instance        { get; private set; }
         public        int                   Level           { get; private set; }
+        public        string                PlayerName      { get; private set; } // 玩家名字
+        public        LinkedList<Record>    Records         { get; private set; } // 游戏记录
         public        int                   FlyCount        { get; private set; } // 发射次数
         public        StageAnchorData       StageAnchorData { get; private set; } // 舞台及锚点数据
         public        List<List<StageNode>> StageNodeData   { get; private set; } // 舞台Node数据
@@ -51,11 +63,13 @@ namespace Logic
         {
             Application.targetFrameRate         = 60;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
+            Camera.main.orthographicSize        = (float) Screen.height / 2 / 100;
         }
 
         protected void Awake()
         {
             Instance       = this;
+            _audioSource   = GetComponent<AudioSource>();
             _lazyFlyBubble = new Lazy<FlyBubble>(() => Instantiate(GameCfg.FlyBubble).GetComponent<FlyBubble>());
             StageNodeData  = new List<List<StageNode>>(GameConstant.StageRowCount);
             for (var i = 0; i < GameConstant.StageRowCount; ++i)
@@ -64,16 +78,37 @@ namespace Logic
             _bubbsCache     = new List<StageBubble>();
             _nodesCache     = new HashSet<StageNode>();
             _nodesPathCache = new HashSet<StageNode>();
+            LoadData();
+        }
+
+        #region 对外接口
+
+        public void StartGame(int lvl)
+        {
+            _gamePanel.gameObject.SetActive(true);
+            InitLevelData(lvl);
         }
 
         [Button]
-        public void StartLevel(int lvl)
+        public void InitLevelData(int lvl)
         {
             Level = lvl;
             var tunning = GameCfg.LevelTunnings[lvl];
             StageAnchorData = new StageAnchorData(tunning.StageType);
             InitLevelStage();
         }
+
+        public void ToggleBgm()
+        {
+            if (_audioSource.isPlaying)
+                _audioSource.Stop();
+            else
+                _audioSource.Play();
+        }
+
+        #endregion
+
+        #region Logic
 
         private void InitLevelStage()
         {
@@ -244,10 +279,8 @@ namespace Logic
             if (wipeCount > 0)
             {
                 // jiafen 
-                
+
                 // tongguan?
-
-
             }
 
             // 下移
@@ -430,5 +463,46 @@ namespace Logic
         {
             print($"game over because of {result}");
         }
+
+        private void LoadData()
+        {
+            Records = new LinkedList<Record>();
+            var fileName = Path.Combine(Application.persistentDataPath, "save.data");
+            if (!File.Exists(Application.persistentDataPath)) return;
+
+            using (var fileStream = File.OpenRead(fileName))
+            {
+                using (var reader = new BinaryReader(fileStream))
+                {
+                    PlayerName = reader.ReadString();
+                    var count = reader.ReadInt32();
+                    for (var i = 0; i < count; ++i)
+                    {
+                        var record = new Record() {Level = reader.ReadInt32(), Score = reader.ReadInt32()};
+                        Records.AddFirst(record);
+                    }
+                }
+            }
+        }
+
+        private void SaveData()
+        {
+            var fileName = Path.Combine(Application.persistentDataPath, "save.data");
+            using (var fileStream = File.OpenWrite(fileName))
+            {
+                using (var writer = new BinaryWriter(fileStream))
+                {
+                    writer.Write(PlayerName);
+                    writer.Write(Records.Count);
+                    foreach (var record in Records)
+                    {
+                        writer.Write(record.Level);
+                        writer.Write(record.Score);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

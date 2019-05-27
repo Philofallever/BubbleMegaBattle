@@ -26,13 +26,16 @@ MonoBehaviour:
       Data: 0|Config.LevelTunning[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 13
     - Name: 
       Entry: 7
       Data: 1|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u53F2\u4E0A\u6700\u5F3A\u5973\u4EC6\u3001\u6258\u5C14\uFF01"
     - Name: InitBubles
       Entry: 7
       Data: 2|Config.BubbType[][], Assembly-CSharp
@@ -305,6 +308,9 @@ MonoBehaviour:
     - Name: StageType
       Entry: 3
       Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u7B2C\u4E8C\u5934\u9F99\u3001\u5EB7\u5A1C\uFF01"
     - Name: InitBubles
       Entry: 7
       Data: 9|Config.BubbType[][], Assembly-CSharp
@@ -449,6 +455,270 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 12|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u65B0\u751F\u6D3B\u3001\u5F00\u59CB\u4E86\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 13|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u5EB7\u5A1C\u3001\u53BB\u4E0A\u5B66\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 14|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u6258\u5C14\u7684\u793E\u4F1A\u5B66\u4E60\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 15|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u5BB6\u5EAD\u62DC\u8BBF\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 16|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u590F\u5929\u7684\u56FA\u5B9A\u6D3B\u52A8\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 17|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u65B0\u6765\u7684\u9F99\u3001\u827E\u9732\u739B\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 18|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u8FD0\u52A8\u4F1A\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 19|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "Dragon\u5267\u56E2\u3001\u767B\u53F0\u6F14\u51FA\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 20|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u5E74\u672B\u5E74\u521D\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 21|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u6258\u5C14\u4E0E\u5C0F\u6797\u3001\u611F\u52A8\u7684\u9082\u9005\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 22|Config.LevelTunning, Assembly-CSharp
+    - Name: StageType
+      Entry: 3
+      Data: 0
+    - Name: Name
+      Entry: 1
+      Data: "\u7EC8\u7109\u5E1D\u3001\u5230\u6765\uFF01"
+    - Name: InitBubles
+      Entry: 6
+      Data: 
+    - Name: MoveDownFlyTimes
+      Entry: 3
+      Data: 0
+    - Name: WaitBubbWeights
+      Entry: 6
+      Data: 
+    - Name: UnNecessaryFillRatio
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -458,7 +728,6 @@ MonoBehaviour:
     \n4.\u6BCF\u6B21\u6D88\u9664\u6CE1\u6CE1\u65F6,\u6D88\u9664\u7684\u8D8A\u591A,\u989D\u5916\u5956\u52B1\u5206\u4E5F\u8D8A\u591A."
   FlyBubbleSpeed: 40
   ExtraGrade: 12
-  MaxLevel: 20
   BubbSprites:
   - {fileID: 0}
   - {fileID: 21300000, guid: cd2f73bc345162c428907ce45aa7c8e1, type: 3}

@@ -1107,6 +1107,11 @@
             Gets a texture of a scene asset icon symbol.
             </summary>
         </member>
+        <member name="P:Sirenix.Utilities.Editor.EditorIcons.UnityGameObjectIcon">
+            <summary>
+            Gets an icon representing a GameObject.
+            </summary>
+        </member>
         <member name="P:Sirenix.Utilities.Editor.EditorIcons.UnityInfoIcon">
             <summary>
             Gets an icon of a unity info icon.
@@ -1156,6 +1161,233 @@
             <summary>
             Not yet documented.
             </summary>
+        </member>
+        <member name="T:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility">
+            <summary>
+            Utility for compiling and emitting expression delegates.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileExpression(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>
+            Compiles an expression and tries to emit a delegate method.
+            </summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted delegate if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileExpression(System.String,System.Boolean,System.Type,System.Type[],System.String@,System.Boolean)">
+            <summary>
+            Compiles an expression and tries to emit a delegate method.
+            </summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="parameters">The parameters of the expression delegate.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted delegate if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileExpression(System.String,Sirenix.Utilities.Editor.Expressions.EmitContext,System.String@,System.Boolean)">
+            <summary>
+            Compiles an expression and tries to emit a delegate method.
+            </summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="context">The emit context.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted delegate if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileExpression(System.String,Sirenix.Utilities.Editor.Expressions.EmitContext,System.Type,System.String@,System.Boolean)">
+            <summary>
+            Compiles an expression and tries to emit a delegate of the specified type.
+            </summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="context">The emit context.</param>
+            <param name="delegateType">The type of the delegate to emit.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted delegate if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``1(System.String,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``2(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``3(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``4(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``5(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``6(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``7(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``8(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``9(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileFunc``10(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionFunc method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionFunc if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction(System.String,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``1(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``2(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``3(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``4(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``5(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``6(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``7(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``8(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.Expressions.ExpressionCompilerUtility.CompileAction``9(System.String,System.Boolean,System.Type,System.String@,System.Boolean)">
+            <summary>Compiles an expression and emits an ExpressionAction method.</summary>
+            <param name="expression">The expression to compile.</param>
+            <param name="isStatic">Indicates if the expression should be static instead of instanced.</param>
+            <param name="contextType">The context type for the execution of the expression.</param>
+            <param name="errorMessage">Output for any errors that may occur.</param>
+            <param name="richTextError">If <c>true</c> then error message will be formatted with color tags. Otherwise, the error message will be formatted with text only.</param>
+            <returns>Returns the emitted ExpressionAction if the expression is compiled successfully. Otherwise, null.</returns>
         </member>
         <member name="T:Sirenix.Utilities.Editor.AsyncProgressBar">
             <summary>
@@ -2111,6 +2343,11 @@
         <member name="P:Sirenix.Utilities.Editor.GUITable.TableRect">
             <summary>
             The Table Rect.
+            </summary>
+        </member>
+        <member name="F:Sirenix.Utilities.Editor.GUITable.RespectIndentLevel">
+            <summary>
+            Whether to respect the current GUI indent level.
             </summary>
         </member>
         <member name="P:Sirenix.Utilities.Editor.GUITable.Item(System.Int32,System.Int32)">
@@ -3149,6 +3386,11 @@
             <param name="type">The object type. This supports inheritance.</param>
             <param name="allowSceneObjects">Wheather or not to allow scene objects.</param>
             <param name="options">Layout options.</param>
+        </member>
+        <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.PolymorphicObjectField(UnityEngine.Rect,UnityEngine.GUIContent,System.Object,System.Type,System.Boolean)">
+            <summary>
+            Draws a polymorphic ObjectField.
+            </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.SirenixEditorFields.PolymorphicObjectField(UnityEngine.Rect,System.Object,System.Type,System.Boolean,System.Boolean,System.Int32)">
             <summary>
@@ -7607,7 +7849,7 @@
         <member name="M:Sirenix.Utilities.Editor.TextureUtilities.LoadImage(System.Int32,System.Int32,System.Byte[])">
             <summary>
             Loads an image from bytes with the specified width and height. Use this instead of someTexture.LoadImage() if you're compiling to an assembly. Unity has moved the method in 2017, 
-            and Unity's assembly updater is not able to fix it for you. This searches for a prober LoadImage method in multiple locations, and also handles type name conflicts.
+            and Unity's assembly updater is not able to fix it for you. This searches for a proper LoadImage method in multiple locations, and also handles type name conflicts.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.Editor.TextureUtilities.CropTexture(UnityEngine.Texture,UnityEngine.Rect)">
@@ -7622,24 +7864,24 @@
             <param name="sprite"></param>
             <returns></returns>
         </member>
-        <member name="P:Sirenix.OdinInspector.Editor.Drawers.IResizableColumn.ColWidth">
+        <member name="P:Sirenix.OdinInspector.Editor.IResizableColumn.ColWidth">
             <summary>
             Gets or sets the width of the col.
             </summary>
         </member>
-        <member name="P:Sirenix.OdinInspector.Editor.Drawers.IResizableColumn.MinWidth">
+        <member name="P:Sirenix.OdinInspector.Editor.IResizableColumn.MinWidth">
             <summary>
             Gets or sets the minimum width.
             </summary>
         </member>
-        <member name="P:Sirenix.OdinInspector.Editor.Drawers.IResizableColumn.PreserveWidth">
+        <member name="P:Sirenix.OdinInspector.Editor.IResizableColumn.PreserveWidth">
             <summary>
             Gets a value indicating whether the width should be preserved when the table itself gets resiszed.
             </summary>
         </member>
-        <member name="P:Sirenix.OdinInspector.Editor.Drawers.IResizableColumn.Resizable">
+        <member name="P:Sirenix.OdinInspector.Editor.IResizableColumn.Resizable">
             <summary>
-            Gets a value indicating whether this <see cref="T:Sirenix.OdinInspector.Editor.Drawers.IResizableColumn"/> is resizable.
+            Gets a value indicating whether this <see cref="T:Sirenix.OdinInspector.Editor.IResizableColumn"/> is resizable.
             </summary>
         </member>
     </members>

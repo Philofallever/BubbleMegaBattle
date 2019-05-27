@@ -1808,14 +1808,14 @@
             A utility class for finding types in various asssembly.
             </summary>
         </member>
-        <member name="M:Sirenix.Utilities.AssemblyUtilities.Reload">
-            <summary>
-            Re-scans the entire AppDomain.
-            </summary>
-        </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.#cctor">
             <summary>
             Initializes the <see cref="T:Sirenix.Utilities.AssemblyUtilities"/> class.
+            </summary>
+        </member>
+        <member name="M:Sirenix.Utilities.AssemblyUtilities.Load(System.Reflection.Assembly[])">
+            <summary>
+            Re-scans the entire AppDomain.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetAllAssemblies">
@@ -1840,7 +1840,7 @@
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.GetType(System.String)">
             <summary>
-            Looks in all assemblies for for the given type.
+            Gets the type.
             </summary>
         </member>
         <member name="M:Sirenix.Utilities.AssemblyUtilities.IsDependentOn(System.Reflection.Assembly,System.Reflection.Assembly)">

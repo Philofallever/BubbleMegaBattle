@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameUI
 {
-    public class GamePanel : MonoBehaviour
+    public class GamePanel : Panel
     {
         [SerializeField, LabelText("随机泡泡")]
         private RandomBubble _randomBubble;

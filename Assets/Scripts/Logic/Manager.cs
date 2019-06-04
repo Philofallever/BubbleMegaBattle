@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.PerformanceData;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Threading;
 using Config;
-using DG.Tweening;
 using GamePrefab;
 using GameUI;
 using Sirenix.OdinInspector;
@@ -27,6 +24,9 @@ namespace Logic
      */
     public class Manager : MonoBehaviour
     {
+        [SerializeField, LabelText("背景图片")]
+        private SpriteRenderer _background;
+
         [SerializeField, LabelText("舞台泡泡Parent")]
         private Transform _stageBubbParent;
 
@@ -39,6 +39,9 @@ namespace Logic
         [SerializeField, LabelText("游戏界面")]
         private GamePanel _gamePanel;
 
+        [SerializeField, LabelText("记录界面")]
+        private RecordsPanel _recordsPanel;
+
         private AudioSource _audioSource;
 
         // ReSharper disable once ConvertToAutoProperty
@@ -47,7 +50,7 @@ namespace Logic
 
         public static Manager               Instance        { get; private set; }
         public        int                   Level           { get; private set; }
-        public        string                PlayerName      { get; private set; } // 玩家名字
+        public        string                PlayerName      { get; set; }         // 玩家名字
         public        LinkedList<Record>    Records         { get; private set; } // 游戏记录
         public        int                   FlyCount        { get; private set; } // 发射次数
         public        StageAnchorData       StageAnchorData { get; private set; } // 舞台及锚点数据
@@ -81,12 +84,26 @@ namespace Logic
             LoadData();
         }
 
+        protected void OnDisable()
+        {
+            SaveData();
+        }
+
         #region 对外接口
 
-        public void StartGame(int lvl)
+        public void StartGame()
         {
             _gamePanel.gameObject.SetActive(true);
-            InitLevelData(lvl);
+
+            var newRecord = Records.First?.Value ?? new Record {Level = 0, Score = 0};
+            Records.AddFirst(newRecord);
+            var level = Records.First.Value.Level;
+            InitLevelData(level);
+        }
+
+        public void DisplayRecords()
+        {
+            _recordsPanel.gameObject.SetActive(true);
         }
 
         [Button]
@@ -94,7 +111,8 @@ namespace Logic
         {
             Level = lvl;
             var tunning = GameCfg.LevelTunnings[lvl];
-            StageAnchorData = new StageAnchorData(tunning.StageType);
+            StageAnchorData    = new StageAnchorData(tunning.StageType);
+            _background.sprite = GameCfg.Backgrounds[UnityRandom.Range(0, GameCfg.Backgrounds.Length)];
             InitLevelStage();
         }
 
@@ -122,8 +140,10 @@ namespace Logic
                 var rowCount = StageAnchorData.GetRowAnchorsCount(row);
                 for (var col = 0; col < rowCount; ++col)
                 {
-                    var cfgClr = row < initBubbs.Length && col < initBubbs[row].Length ? initBubbs[row][col] : BubbType.Empty;
-                    var node   = new StageNode {Row = row, Col = col, BubbType = cfgClr, AnchorPos = StageAnchorData[row, col]};
+                    var cfgClr = row < initBubbs.GetLength(0) ? initBubbs[row, col] : BubbType.Empty;
+                    if (cfgClr == BubbType.Colorful)
+                        cfgClr = BubbTypeUtil.GetRandomStageType();
+                    var node = new StageNode {Row = row, Col = col, BubbType = cfgClr, AnchorPos = StageAnchorData[row, col]};
                     StageNodeData[row].Add(node);
                 }
             }
@@ -134,7 +154,7 @@ namespace Logic
                     SpawnStageBubble(node);
             }
 
-            _gamePanel.SpawnWaitBubble();
+            _gamePanel.Reset();
         }
 
         public void SpawnFlyBubble(BubbType type, Vector2 flyDir, Vector2 position)
@@ -159,7 +179,7 @@ namespace Logic
                     {
                         node.ParentNode      = node;
                         sideNode.ParentNode  = node;
-                        _parentRecords[node] = new HashSet<StageNode>() {node, sideNode};
+                        _parentRecords[node] = new HashSet<StageNode> {node, sideNode};
                     }
                     else if (sideNode.ParentNode != null && node.ParentNode == null)
                     {
@@ -180,7 +200,7 @@ namespace Logic
             if (node.ParentNode == null)
             {
                 node.ParentNode      = node;
-                _parentRecords[node] = new HashSet<StageNode>() {node};
+                _parentRecords[node] = new HashSet<StageNode> {node};
             }
 
             var stageBubble = Instantiate(GameCfg.StageBubble, node.AnchorPos, Quaternion.identity, _stageBubbParent).GetComponent<StageBubble>();
@@ -278,9 +298,17 @@ namespace Logic
             var wipeCount = WipeBubbleAfterCollide(stageNode);
             if (wipeCount > 0)
             {
-                // jiafen 
+                // 计算得分
+                var wipeLevel = CalcWipeScore(wipeCount);
 
-                // tongguan?
+                _gamePanel.UpdateScore(wipeLevel);
+                // 通关
+                _stageBubbParent.GetComponentsInChildren(_bubbsCache);
+                if (_bubbsCache.Count == 0)
+                {
+                    SetLevelResult(LevelResult.Pass);
+                    return;
+                }
             }
 
             // 下移
@@ -327,7 +355,7 @@ namespace Logic
                 wipe.ParentNode = null;
             }
 
-            _stageBubbParent.GetComponentsInChildren<StageBubble>(_bubbsCache);
+            _stageBubbParent.GetComponentsInChildren(_bubbsCache);
             _bubbsCache.RemoveAll(bubb => !wipeNodes.Contains(bubb.StageNode));
             foreach (var bubb in _bubbsCache)
                 bubb.PlayWipeAnim();
@@ -379,8 +407,8 @@ namespace Logic
             var lastMoveRow = GameConstant.StageRowCount - GameConstant.MoveDownRowNum;
             if (StageNodeData[lastMoveRow].Exists(node => node.BubbType != BubbType.Empty))
                 return false;
-            else
-                return true;
+
+            return true;
         }
 
         private IEnumerator MoveDownWait(int leftBubbCount)
@@ -413,7 +441,7 @@ namespace Logic
             }
 
             // 重设现有泡泡位置
-            _stageBubbParent.GetComponentsInChildren<StageBubble>(_bubbsCache);
+            _stageBubbParent.GetComponentsInChildren(_bubbsCache);
             foreach (var bubble in _bubbsCache)
                 bubble.transform.position = bubble.StageNode.AnchorPos;
 
@@ -459,6 +487,29 @@ namespace Logic
 
         #endregion
 
+        private WipeLevel CalcWipeScore(int wipeBubbCount)
+        {
+            var record = Records.First.Value;
+            record.Score += wipeBubbCount; // 基础得分
+            var wipeLevel = WipeLevel.Normal;
+
+            var extraWipes = GameCfg.ExtraWipes;
+            for (var i = extraWipes.Length - 1; i >= 0; i--)
+            {
+                var extraCount = wipeBubbCount - extraWipes[i];
+                if (extraCount <= 0) continue;
+
+                if (wipeLevel == WipeLevel.Normal)
+                    wipeLevel = (WipeLevel) i;
+
+                record.Score  += GameCfg.ExtraScores[i] * extraCount;
+                wipeBubbCount -= extraCount;
+            }
+
+            Records.First.Value = record;
+            return wipeLevel;
+        }
+
         private void SetLevelResult(LevelResult result)
         {
             print($"game over because of {result}");
@@ -468,7 +519,7 @@ namespace Logic
         {
             Records = new LinkedList<Record>();
             var fileName = Path.Combine(Application.persistentDataPath, "save.data");
-            if (!File.Exists(Application.persistentDataPath)) return;
+            if (!File.Exists(fileName)) return;
 
             using (var fileStream = File.OpenRead(fileName))
             {
@@ -478,8 +529,8 @@ namespace Logic
                     var count = reader.ReadInt32();
                     for (var i = 0; i < count; ++i)
                     {
-                        var record = new Record() {Level = reader.ReadInt32(), Score = reader.ReadInt32()};
-                        Records.AddFirst(record);
+                        var record = new Record {Level = reader.ReadInt32(), Score = reader.ReadInt32()};
+                        Records.AddLast(record);
                     }
                 }
             }
@@ -487,6 +538,8 @@ namespace Logic
 
         private void SaveData()
         {
+            if (PlayerName == null) return;
+
             var fileName = Path.Combine(Application.persistentDataPath, "save.data");
             using (var fileStream = File.OpenWrite(fileName))
             {
@@ -494,8 +547,12 @@ namespace Logic
                 {
                     writer.Write(PlayerName);
                     writer.Write(Records.Count);
+                    var maxSaveCount = 15;
                     foreach (var record in Records)
                     {
+                        --maxSaveCount;
+                        if (maxSaveCount < 0) break;
+
                         writer.Write(record.Level);
                         writer.Write(record.Score);
                     }

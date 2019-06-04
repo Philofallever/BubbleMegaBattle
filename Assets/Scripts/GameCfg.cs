@@ -15,8 +15,8 @@ namespace Config
         [LabelText("关卡名")]
         public string Name;
 
-        [LabelText("初始填充泡泡")]
-        public BubbType[][] InitBubles;
+        [LabelText("初始填充泡泡"), TableMatrix(HorizontalTitle = "列数:固定10", VerticalTitle = "行:按需填", Transpose = true)]
+        public BubbType[,] InitBubles;
 
         [LabelText("下移需要发射次数*"), Tooltip("0表示不会下移")]
         public int MoveDownFlyTimes;
@@ -41,7 +41,7 @@ namespace Config
             }
         }
 
-        [LabelText("下移时非必需位填充几率"),]
+        [LabelText("下移时非必需位填充几率")]
         public float UnNecessaryFillRatio;
     }
 
@@ -53,11 +53,26 @@ namespace Config
         [TabGroup("通用配置"), LabelText("飞行气泡速度")]
         public float FlyBubbleSpeed;
 
-        [TabGroup("通用配置"), LabelText("额外奖励分")]
-        public int ExtraGrade;
+        [TabGroup("通用配置"), LabelText("额外消除数")]
+        public int[] ExtraWipes;
 
-        [TabGroup("关卡配置"), LabelText("关卡配置"),ListDrawerSettings(ShowIndexLabels = true)]
+        [TabGroup("通用配置"), LabelText("额外消除奖励分")]
+        public int[] ExtraScores;
+
+        [TabGroup("通用配置"), LabelText("关卡名称格式")]
+        public string LevelNameFmt;
+
+        [TabGroup("通用配置"), LabelText("记录标题"),TextArea]
+        public string RecordTitle;
+
+        [TabGroup("通用配置"), LabelText("记录条目"),TextArea]
+        public string RecordEntry;
+
+        [TabGroup("关卡配置"), LabelText("关卡配置"), ListDrawerSettings(ShowIndexLabels = true)]
         public LevelTunning[] LevelTunnings;
+
+        [TabGroup("游戏资源"), LabelText("背景")]
+        public Sprite[] Backgrounds;
 
         [TabGroup("游戏资源"), LabelText("泡泡精灵")]
         public Sprite[] BubbSprites;

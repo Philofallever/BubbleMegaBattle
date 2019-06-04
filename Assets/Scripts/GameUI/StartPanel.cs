@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using GameUI;
-using Logic;
+﻿using Logic;
 using Sirenix.OdinInspector;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameUI
@@ -34,12 +32,14 @@ namespace GameUI
 
         private void OnStartClick()
         {
-            var level = Manager.Instance.Records.First?.Value.Level ?? 0;
-            Manager.Instance.StartGame(level);
+            Manager.Instance.StartGame();
         }
 
         private void OnRankClick()
         {
+            if(string.IsNullOrEmpty(Manager.Instance.PlayerName)) return;
+
+            Manager.Instance.DisplayRecords();
         }
 
         private void OnMusicClick()

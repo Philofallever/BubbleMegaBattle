@@ -8,7 +8,7 @@ namespace GameUI
     {
         private static GameObject _lastShowPanelObj;
 
-        private static GameObject LastShowPanelObj
+        protected static GameObject LastShowPanelObj
         {
             get => _lastShowPanelObj;
             set

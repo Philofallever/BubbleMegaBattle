@@ -38,16 +38,28 @@ MonoBehaviour:
       Data: "\u53F2\u4E0A\u6700\u5F3A\u5973\u4EC6\u3001\u6258\u5C14\uFF01"
     - Name: InitBubles
       Entry: 7
-      Data: 2|Config.BubbType[][], Assembly-CSharp
+      Data: 2|Config.BubbType[,], Assembly-CSharp
     - Name: 
       Entry: 12
+      Data: 40
+    - Name: ranks
+      Entry: 1
+      Data: 4|10
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
       Data: 3
     - Name: 
-      Entry: 7
-      Data: 3|Config.BubbType[], Assembly-CSharp
-    - Name: 
-      Entry: 12
-      Data: 10
+      Entry: 3
+      Data: 2
     - Name: 
       Entry: 3
       Data: 1
@@ -56,40 +68,7 @@ MonoBehaviour:
       Data: 2
     - Name: 
       Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 3
-      Data: 3
-    - Name: 
-      Entry: 3
-      Data: 7
-    - Name: 
-      Entry: 3
-      Data: 4
-    - Name: 
-      Entry: 3
-      Data: 2
-    - Name: 
-      Entry: 3
-      Data: 3
-    - Name: 
-      Entry: 3
-      Data: 4
-    - Name: 
-      Entry: 3
-      Data: 4
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 4|Config.BubbType[], Assembly-CSharp
-    - Name: 
-      Entry: 12
-      Data: 9
+      Data: 0
     - Name: 
       Entry: 3
       Data: 0
@@ -98,49 +77,37 @@ MonoBehaviour:
       Data: 2
     - Name: 
       Entry: 3
-      Data: 7
+      Data: 2
     - Name: 
       Entry: 3
       Data: 5
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
     - Name: 
       Entry: 3
       Data: 3
     - Name: 
       Entry: 3
-      Data: 5
-    - Name: 
-      Entry: 3
-      Data: 4
-    - Name: 
-      Entry: 3
-      Data: 6
-    - Name: 
-      Entry: 3
-      Data: 4
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 5|Config.BubbType[], Assembly-CSharp
-    - Name: 
-      Entry: 12
-      Data: 10
-    - Name: 
-      Entry: 3
       Data: 0
     - Name: 
       Entry: 3
       Data: 0
     - Name: 
       Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 3
       Data: 0
     - Name: 
       Entry: 3
-      Data: 4
+      Data: 2
     - Name: 
       Entry: 3
       Data: 0
@@ -149,6 +116,21 @@ MonoBehaviour:
       Data: 5
     - Name: 
       Entry: 3
+      Data: 6
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
       Data: 0
     - Name: 
       Entry: 3
@@ -158,13 +140,31 @@ MonoBehaviour:
       Data: 6
     - Name: 
       Entry: 3
-      Data: 6
+      Data: 4
     - Name: 
-      Entry: 13
-      Data: 
+      Entry: 3
+      Data: 0
     - Name: 
-      Entry: 8
-      Data: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
     - Name: 
       Entry: 13
       Data: 
@@ -176,11 +176,11 @@ MonoBehaviour:
       Data: 12
     - Name: WaitBubbWeights
       Entry: 7
-      Data: 6|System.Collections.Generic.Dictionary`2[[Config.BubbType, Assembly-CSharp],[System.Int32,
+      Data: 3|System.Collections.Generic.Dictionary`2[[Config.BubbType, Assembly-CSharp],[System.Int32,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 7|System.Collections.Generic.EnumEqualityComparer`1[[Config.BubbType,
+      Data: 4|System.Collections.Generic.EnumEqualityComparer`1[[Config.BubbType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -197,10 +197,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 1
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 1000
     - Name: 
@@ -209,10 +209,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 2
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 1000
     - Name: 
@@ -221,10 +221,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 3
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 3000
     - Name: 
@@ -233,10 +233,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 4
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 1000
     - Name: 
@@ -245,10 +245,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 5
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 3000
     - Name: 
@@ -257,10 +257,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 6
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 1000
     - Name: 
@@ -269,10 +269,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 7
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 1000
     - Name: 
@@ -281,10 +281,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 8
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 1000
     - Name: 
@@ -304,7 +304,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 8|Config.LevelTunning, Assembly-CSharp
+      Data: 5|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -313,9 +313,42 @@ MonoBehaviour:
       Data: "\u7B2C\u4E8C\u5934\u9F99\u3001\u5EB7\u5A1C\uFF01"
     - Name: InitBubles
       Entry: 7
-      Data: 9|Config.BubbType[][], Assembly-CSharp
+      Data: 6|Config.BubbType[,], Assembly-CSharp
     - Name: 
       Entry: 12
+      Data: 10
+    - Name: ranks
+      Entry: 1
+      Data: 1|10
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 6
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
       Data: 0
     - Name: 
       Entry: 13
@@ -328,11 +361,11 @@ MonoBehaviour:
       Data: 2
     - Name: WaitBubbWeights
       Entry: 7
-      Data: 10|System.Collections.Generic.Dictionary`2[[Config.BubbType, Assembly-CSharp],[System.Int32,
+      Data: 7|System.Collections.Generic.Dictionary`2[[Config.BubbType, Assembly-CSharp],[System.Int32,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 11|System.Collections.Generic.EnumEqualityComparer`1[[Config.BubbType,
+      Data: 8|System.Collections.Generic.EnumEqualityComparer`1[[Config.BubbType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -349,10 +382,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 1
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 2
     - Name: 
@@ -361,10 +394,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 2
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 0
     - Name: 
@@ -373,10 +406,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 3
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 0
     - Name: 
@@ -385,10 +418,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 4
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 0
     - Name: 
@@ -397,10 +430,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 5
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 0
     - Name: 
@@ -409,10 +442,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 6
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 0
     - Name: 
@@ -421,10 +454,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 7
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 0
     - Name: 
@@ -433,10 +466,10 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 
-    - Name: 
+    - Name: $k
       Entry: 3
       Data: 8
-    - Name: 
+    - Name: $v
       Entry: 3
       Data: 0
     - Name: 
@@ -456,7 +489,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 12|Config.LevelTunning, Assembly-CSharp
+      Data: 9|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -480,7 +513,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 13|Config.LevelTunning, Assembly-CSharp
+      Data: 10|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -504,7 +537,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 14|Config.LevelTunning, Assembly-CSharp
+      Data: 11|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -528,7 +561,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 15|Config.LevelTunning, Assembly-CSharp
+      Data: 12|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -552,7 +585,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 16|Config.LevelTunning, Assembly-CSharp
+      Data: 13|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -576,7 +609,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 17|Config.LevelTunning, Assembly-CSharp
+      Data: 14|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -600,7 +633,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 18|Config.LevelTunning, Assembly-CSharp
+      Data: 15|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -624,7 +657,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 19|Config.LevelTunning, Assembly-CSharp
+      Data: 16|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -648,7 +681,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 20|Config.LevelTunning, Assembly-CSharp
+      Data: 17|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -672,7 +705,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 21|Config.LevelTunning, Assembly-CSharp
+      Data: 18|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -696,7 +729,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 22|Config.LevelTunning, Assembly-CSharp
+      Data: 19|Config.LevelTunning, Assembly-CSharp
     - Name: StageType
       Entry: 3
       Data: 0
@@ -727,7 +760,17 @@ MonoBehaviour:
   RuleDesc: "1.\u6BCF\u4E2A\u5173\u5361\u4F1A\u968F\u673A\u751F\u6210\u4E00\u4E9B\u6CE1\u6CE1,\u901A\u8FC7\u53D1\u5C04\u6CE1\u6CE1\u6D88\u9664\u821E\u53F0\u4E0A\u7684\u6240\u6709\u6CE1\u6CE1\u83B7\u5F97\u5173\u5361\u80DC\u5229.\n2.\u53D1\u5C04\u7684\u6CE1\u6CE1\u5728\u78B0\u649E\u5230\u821E\u53F0\u6CE1\u6CE1\u8FDE\u8D77\u6765\u540E,\u5982\u679C\u540C\u8272\u4E14\u6570\u91CF\u5927\u4E8E3\u65F6,\u5219\u4F1A\u6D88\u9664.\n3.\u6CE1\u6CE1\u53D1\u5C04\u4E00\u5B9A\u6B21\u6570\u540E,\u821E\u53F0\u4F1A\u4E0B\u79FB\u5E76\u5728\u6700\u4E0A\u65B9\u4F1A\u751F\u6210\u4E00\u884C\u65B0\u7684\u6CE1\u6CE1.
     \n4.\u6BCF\u6B21\u6D88\u9664\u6CE1\u6CE1\u65F6,\u6D88\u9664\u7684\u8D8A\u591A,\u989D\u5916\u5956\u52B1\u5206\u4E5F\u8D8A\u591A."
   FlyBubbleSpeed: 40
-  ExtraGrade: 12
+  ExtraWipes: 030000000a000000140000001e000000
+  ExtraScores: 0100000002000000050000000a000000
+  LevelNameFmt: "\u7B2C{0}\u8BDD  {1}"
+  RecordTitle: "<line-height=150%><align=\"center\">{0}\u7684\u6E38\u620F\u8BB0\u5F55\n\u6700\u9AD8\u5173\u5361
+    <space=240> \u5F97\u5206<line-height=100%>"
+  RecordEntry: <color=#413E6B>{0}<space=500> {1}</color>
+  Backgrounds:
+  - {fileID: 21300000, guid: d363b80141380c948833b03bfb458238, type: 3}
+  - {fileID: 21300000, guid: bfd2a8a075fe097419f6e76f05c4e534, type: 3}
+  - {fileID: 21300000, guid: c216a9725ed256d438ec6256b2dd4ad1, type: 3}
+  - {fileID: 21300000, guid: d952ff87c3e972c45868ffb11731d222, type: 3}
   BubbSprites:
   - {fileID: 0}
   - {fileID: 21300000, guid: cd2f73bc345162c428907ce45aa7c8e1, type: 3}

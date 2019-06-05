@@ -62,11 +62,14 @@ namespace Config
         [TabGroup("通用配置"), LabelText("关卡名称格式")]
         public string LevelNameFmt;
 
-        [TabGroup("通用配置"), LabelText("记录标题"),TextArea]
+        [TabGroup("通用配置"), LabelText("记录标题"), TextArea]
         public string RecordTitle;
 
-        [TabGroup("通用配置"), LabelText("记录条目"),TextArea]
+        [TabGroup("通用配置"), LabelText("记录条目"), TextArea]
         public string RecordEntry;
+
+        [TabGroup("通用配置"), LabelText("字符串")]
+        public TextAsset Light;
 
         [TabGroup("关卡配置"), LabelText("关卡配置"), ListDrawerSettings(ShowIndexLabels = true)]
         public LevelTunning[] LevelTunnings;

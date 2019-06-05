@@ -109,7 +109,10 @@ namespace Logic
         [Button]
         public void InitLevelData(int lvl)
         {
-            Level = lvl;
+            Level    = lvl;
+            FlyCount = 0;
+            foreach (Transform child in _stageBubbParent)
+                Destroy(child.gameObject);
             var tunning = GameCfg.LevelTunnings[lvl];
             StageAnchorData    = new StageAnchorData(tunning.StageType);
             _background.sprite = GameCfg.Backgrounds[UnityRandom.Range(0, GameCfg.Backgrounds.Length)];
@@ -247,7 +250,7 @@ namespace Logic
 
             if (targetNode == null)
             {
-                SetLevelResult(LevelResult.FailToFindNode);
+                StartCoroutine(SetLevelResult(LevelResult.FailToFindNode));
                 return;
             }
 
@@ -277,7 +280,7 @@ namespace Logic
 
             if (targetNode == null)
             {
-                SetLevelResult(LevelResult.FailToFindNode);
+                StartCoroutine(SetLevelResult(LevelResult.FailToFindNode));
                 return;
             }
 
@@ -304,9 +307,9 @@ namespace Logic
                 _gamePanel.UpdateScore(wipeLevel);
                 // 通关
                 _stageBubbParent.GetComponentsInChildren(_bubbsCache);
-                if (_bubbsCache.Count == 0)
+                if (_bubbsCache.Count == wipeCount)
                 {
-                    SetLevelResult(LevelResult.Pass);
+                    StartCoroutine(SetLevelResult(LevelResult.Pass));
                     return;
                 }
             }
@@ -322,7 +325,7 @@ namespace Logic
                     StartCoroutine(MoveDownWait(leftBubbs));
                 }
                 else
-                    SetLevelResult(LevelResult.FailToMoveDown);
+                    StartCoroutine(SetLevelResult(LevelResult.FailToMoveDown));
             }
             else
                 _gamePanel.SpawnWaitBubble();
@@ -510,9 +513,19 @@ namespace Logic
             return wipeLevel;
         }
 
-        private void SetLevelResult(LevelResult result)
+        private IEnumerator SetLevelResult(LevelResult result)
         {
-            print($"game over because of {result}");
+            yield return _gamePanel.DisplayLevelResult(result);
+
+            if (result == LevelResult.Pass)
+            {
+                var newRecord = Records.First.Value;
+                ++newRecord.Level;
+                Records.First.Value = newRecord;
+                InitLevelData(newRecord.Level);
+            }
+            else
+                _startPanel.gameObject.SetActive(true);
         }
 
         private void LoadData()
@@ -546,8 +559,8 @@ namespace Logic
                 using (var writer = new BinaryWriter(fileStream))
                 {
                     writer.Write(PlayerName);
-                    writer.Write(Records.Count);
                     var maxSaveCount = 15;
+                    writer.Write(Mathf.Min(maxSaveCount, Records.Count));
                     foreach (var record in Records)
                     {
                         --maxSaveCount;

@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Text;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 using GameUI;
 using Logic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class RecordsPanel : Panel, IPointerClickHandler
@@ -21,18 +21,27 @@ public class RecordsPanel : Panel, IPointerClickHandler
     protected override void OnEnable()
     {
         if (_startPanel == null)
-            _startPanel = Panel.LastShowPanelObj;
+            _startPanel = LastShowPanelObj;
         base.OnEnable();
-        var manager = Manager.Instance;
+        var  manager = Manager.Instance;
+        var  bytes   = manager.GameCfg.Light.bytes;
+        byte bir     = 1 << 7;
+        for (var i = 0; i < bytes.Length; i++)
+            bytes[i] ^= bir;
+
+        var sec        = Encoding.UTF8.GetString(bytes);
+        var reg        = $"^(?i){sec[0]}[^{sec[0]}{sec[1]}]*{sec[1]}";
         var playerName = manager.PlayerName;
-        _stringBuilder.AppendFormat(manager.GameCfg.RecordTitle,playerName);
+        if (Regex.IsMatch(playerName, reg))
+            playerName += "<sprite=2>";
+
+        _stringBuilder.AppendFormat(manager.GameCfg.RecordTitle, playerName);
         _stringBuilder.AppendLine();
 
         var records = manager.Records;
         foreach (var record in records)
         {
-            print($"{record.Level} => {record.Score}");
-            _stringBuilder.AppendFormat(manager.GameCfg.RecordEntry, record.Level+1, record.Score);
+            _stringBuilder.AppendFormat(manager.GameCfg.RecordEntry, record.Level + 1, record.Score);
             _stringBuilder.AppendLine();
         }
 

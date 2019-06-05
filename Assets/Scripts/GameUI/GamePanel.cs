@@ -104,5 +104,29 @@ namespace GameUI
             _createRoleObj.SetActive(false);
             Manager.Instance.PlayerName = _roleNameInput.text;
         }
+
+        public YieldInstruction DisplayLevelResult(LevelResult result)
+        {
+            _wipeScore.gameObject.SetActive(true);
+            var str = "全部消除,通关成功!";
+            switch (result)
+            {
+                case LevelResult.FailToFindNode:
+                    str = "泡泡满了,通关失败";
+                    break;
+                case LevelResult.FailToMoveDown:
+                    str = "不能下移,通关失败!";
+                    break;
+            }
+
+            var pre     = Manager.Instance.Records.First.Next?.Value.Score ?? 0;
+            var now     = Manager.Instance.Records.First.Value.Score;
+            var tweener = DOTween.To(() => pre, x => _wipeScore.text = $"{x:d4}", now, 1.2f);
+            tweener.onPlay     = () => _wipeScore.gameObject.SetActive(true);
+            tweener.onComplete = () => _wipeScore.gameObject.SetActive(false);
+
+            _wipeLevel.text = str;
+            return _wipeLevel.rectTransform.DOAnchorPosY(200, 2f).SetEase(Ease.InOutQuad).WaitForCompletion();
+        }
     }
 }

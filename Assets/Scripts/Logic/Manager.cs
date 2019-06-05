@@ -66,7 +66,8 @@ namespace Logic
         {
             Application.targetFrameRate         = 60;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
-            Camera.main.orthographicSize        = (float) Screen.height / 2 / 100;
+
+            Camera.main.orthographicSize = Mathf.Max(1920f,Screen.height) / 2 / 100;
         }
 
         protected void Awake()

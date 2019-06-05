@@ -86,10 +86,13 @@ namespace Config
         [TabGroup("游戏资源"), LabelText("飞行中的球")]
         public GameObject FlyBubble;
 
+#if UNITY_EDITOR
+
         [Button("保存", ButtonSizes.Medium)]
         private void Save()
         {
             AssetDatabase.SaveAssets();
         }
+#endif
     }
 }

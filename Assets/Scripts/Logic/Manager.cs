@@ -9,6 +9,7 @@ using GamePrefab;
 using GameUI;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityRandom = UnityEngine.Random;
 
 namespace Logic
@@ -82,11 +83,24 @@ namespace Logic
             _bubbsCache     = new List<StageBubble>();
             _nodesCache     = new HashSet<StageNode>();
             _nodesPathCache = new HashSet<StageNode>();
+
+            if (Permission.HasUserAuthorizedPermission(Permission.ExternalStorageRead))
+            {
+                Permission.RequestUserPermission(Permission.ExternalStorageRead);
+                Permission.RequestUserPermission(Permission.ExternalStorageWrite);
+            }
             LoadData();
         }
 
         protected void OnDisable()
         {
+            SaveData();
+        }
+
+        protected void OnApplicationPause(bool pause)
+        {
+            if(!pause) return;
+
             SaveData();
         }
 

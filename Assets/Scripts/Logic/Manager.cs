@@ -68,7 +68,7 @@ namespace Logic
             Application.targetFrameRate         = 60;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
 
-            Camera.main.orthographicSize = Mathf.Max(1920f,Screen.height) / 2 / 100;
+            Camera.main.orthographicSize = Mathf.Max(1920f, Screen.height) / 2 / 100;
         }
 
         protected void Awake()
@@ -131,6 +131,7 @@ namespace Logic
             var tunning = GameCfg.LevelTunnings[lvl];
             StageAnchorData    = new StageAnchorData(tunning.StageType);
             _background.sprite = GameCfg.Backgrounds[UnityRandom.Range(0, GameCfg.Backgrounds.Length)];
+            _background.transform.localScale = Vector3.one * Screen.height/1920f;
             InitLevelStage();
         }
 

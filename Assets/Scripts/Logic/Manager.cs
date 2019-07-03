@@ -62,17 +62,18 @@ namespace Logic
         private HashSet<StageNode>                        _nodesCache;     // Nodes缓存
         private HashSet<StageNode>                        _nodesPathCache; // Nodes缓存
 
-        [RuntimeInitializeOnLoadMethod]
-        public static void Initialize()
+        protected void InitAppSetting()
         {
             Application.targetFrameRate         = 60;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("zh-CN");
 
-            Camera.main.orthographicSize = Mathf.Max(1920f, Screen.height) / 2 / 100;
+            Camera.main.orthographicSize     = Mathf.Max(1920f, Screen.height) / 2 / 100;
+            _background.transform.localScale = Vector3.one * Screen.height / 1920f;
         }
 
         protected void Awake()
         {
+            InitAppSetting();
             Instance       = this;
             _audioSource   = GetComponent<AudioSource>();
             _lazyFlyBubble = new Lazy<FlyBubble>(() => Instantiate(GameCfg.FlyBubble).GetComponent<FlyBubble>());
@@ -89,6 +90,7 @@ namespace Logic
                 Permission.RequestUserPermission(Permission.ExternalStorageRead);
                 Permission.RequestUserPermission(Permission.ExternalStorageWrite);
             }
+
             LoadData();
         }
 
@@ -99,7 +101,7 @@ namespace Logic
 
         protected void OnApplicationPause(bool pause)
         {
-            if(!pause) return;
+            if (!pause) return;
 
             SaveData();
         }
@@ -131,7 +133,6 @@ namespace Logic
             var tunning = GameCfg.LevelTunnings[lvl];
             StageAnchorData    = new StageAnchorData(tunning.StageType);
             _background.sprite = GameCfg.Backgrounds[UnityRandom.Range(0, GameCfg.Backgrounds.Length)];
-            _background.transform.localScale = Vector3.one * Screen.height/1920f;
             InitLevelStage();
         }
 
@@ -245,11 +246,18 @@ namespace Logic
             var involveBubb  = collision.gameObject.GetComponent<StageBubble>();
             var involveNode  = involveBubb.StageNode;
             var contactPoint = collision.GetContact(0).point;
+            var flyBubble    = _lazyFlyBubble.Value;
 
             StageNode targetNode = null;
             foreach (var sideNode in involveNode)
             {
                 if (sideNode == null || sideNode.BubbType != BubbType.Empty)
+                    continue;
+
+                // 空泡泡位置离飞行泡泡的距离超过一个半径
+                var flyPos       = new Vector2(flyBubble.transform.position.x, flyBubble.transform.position.y);
+                var ditanceToFly = Vector2.SqrMagnitude(sideNode.AnchorPos - flyPos);
+                if (ditanceToFly > GameConstant.BubbRadius * GameConstant.BubbRadius)
                     continue;
 
                 if (targetNode == null)
@@ -270,7 +278,7 @@ namespace Logic
                 return;
             }
 
-            targetNode.BubbType = _lazyFlyBubble.Value.BubbType == BubbType.Colorful ? involveNode.BubbType : _lazyFlyBubble.Value.BubbType;
+            targetNode.BubbType = flyBubble.BubbType == BubbType.Colorful ? involveNode.BubbType : flyBubble.BubbType;
             OnFindNodeSuccAfterCollide(targetNode);
         }
 

@@ -1,7 +1,7 @@
 # BubbleMegaBattle
 ---------------------
 
-Update 2024/05/13 unity现在有了官方的2d三消 [gem-hunter-match](https://assetstore.unity.com/packages/essentials/tutorial-projects/gem-hunter-match-2d-sample-project-278941), 建议看看这个
+** Update 2024/05/13 unity现在有了官方的2d三消 [gem-hunter-match](https://assetstore.unity.com/packages/essentials/tutorial-projects/gem-hunter-match-2d-sample-project-278941), 建议看看这个 **
 
 ------------------------
 一个适合新手的U3d练手项目
